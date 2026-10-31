@@ -17,6 +17,8 @@ import {
   CreditCard,
   X,
   Layers,
+  Sparkles,
+  ShoppingBag,
 } from 'lucide-react';
 import { api } from '../services/api';
 import { EmptyState } from '../components/EmptyState';
@@ -107,7 +109,7 @@ export function Orders() {
   const isOrderVerified = (orderId) => !!verifiedOrders[orderId];
 
   return (
-    <div className="page-body">
+    <div className="page-body animate-fade-in">
       {/* Title */}
       <div
         style={{
@@ -116,15 +118,15 @@ export function Orders() {
           alignItems: 'flex-start',
           marginBottom: '2rem',
           flexWrap: 'wrap',
-          gap: '1rem',
+          gap: '1.25rem',
         }}
       >
         <div>
-          <div className="eyebrow" style={{ marginBottom: '0.45rem' }}>
-            <Layers size={13} />
-            <span>Retail Telemetry • 1,000 Verified Orders</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.45rem' }}>
+            <span className="badge badge-violet">Retail Telemetry</span>
+            <span className="badge badge-muted">1,000 Verified Orders</span>
           </div>
-          <h1 style={{ fontSize: '2.15rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+          <h1 style={{ fontSize: '2.15rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
             Order Intelligence & Fulfillment
           </h1>
           <p style={{ color: 'var(--muted-text)', fontSize: '0.96rem' }}>
@@ -144,7 +146,7 @@ export function Orders() {
         style={{
           padding: '1.15rem 1.75rem',
           backgroundColor: '#FFFFFF',
-          borderLeft: '4px solid #0E703C',
+          borderLeft: '4px solid var(--success)',
           marginBottom: '1.75rem',
           display: 'flex',
           alignItems: 'center',
@@ -154,9 +156,9 @@ export function Orders() {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <ShieldCheck size={20} color="#0E703C" />
+          <ShieldCheck size={20} color="#21865B" />
           <span style={{ fontSize: '0.86rem', color: 'var(--body-text)' }}>
-            <strong style={{ color: 'var(--corp-navy)' }}>Privacy Protocol:</strong> Customer verification is strictly required before exposing private order details or processing return claims.
+            <strong style={{ color: 'var(--primary-indigo)' }}>Privacy Protocol:</strong> Customer verification is strictly required before exposing private order details or processing return claims.
           </span>
         </div>
         <span style={{ fontSize: '0.78rem', color: 'var(--muted-text)', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
@@ -176,7 +178,7 @@ export function Orders() {
       >
         <form onSubmit={handleSearch} style={{ flex: 1, minWidth: '300px', display: 'flex', gap: '0.65rem' }}>
           <div style={{ position: 'relative', flex: 1, display: 'flex', alignItems: 'center' }}>
-            <Search size={16} color="#64748B" style={{ position: 'absolute', left: '12px', pointerEvents: 'none' }} />
+            <Search size={16} color="#77758A" style={{ position: 'absolute', left: '12px', pointerEvents: 'none' }} />
             <input
               type="text"
               value={searchQuery}
@@ -184,7 +186,7 @@ export function Orders() {
               placeholder="Search by Order ID (ORD-...), Customer ID (CUST-...), or Pincode..."
               style={{
                 width: '100%',
-                padding: '0.6rem 0.85rem 0.6rem 2.35rem',
+                padding: '0.62rem 0.85rem 0.62rem 2.35rem',
                 borderRadius: 'var(--radius-sm)',
                 border: '1px solid var(--border-medium)',
                 backgroundColor: '#FFFFFF',
@@ -207,9 +209,11 @@ export function Orders() {
                 borderRadius: 'var(--radius-sm)',
                 fontSize: '0.78rem',
                 fontWeight: 700,
-                backgroundColor: statusFilter === st ? 'var(--corp-navy)' : '#FFFFFF',
-                color: statusFilter === st ? '#FFFFFF' : 'var(--corp-navy)',
-                border: statusFilter === st ? '1px solid var(--corp-navy)' : '1px solid var(--border-light)',
+                backgroundColor: statusFilter === st ? 'var(--primary-indigo)' : '#FFFFFF',
+                color: statusFilter === st ? '#FFFFFF' : 'var(--primary-indigo)',
+                border: statusFilter === st ? '1px solid var(--primary-indigo)' : '1px solid var(--border-card)',
+                cursor: 'pointer',
+                transition: 'all var(--transition-fast)',
               }}
             >
               {st === 'all' ? 'All Orders' : st}
@@ -221,90 +225,87 @@ export function Orders() {
       {/* Main Split: Order Table on Left, Order Detail View on Right */}
       <div style={{ display: 'grid', gridTemplateColumns: '1.35fr 1fr', gap: '1.75rem' }}>
         {/* Orders Table */}
-        <div className="zm-card" style={{ overflow: 'hidden' }}>
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.86rem' }}>
-              <thead>
-                <tr style={{ backgroundColor: 'var(--bg-slate)', borderBottom: '1px solid var(--border-light)', color: 'var(--corp-navy)', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 800 }}>
-                  <th style={{ padding: '0.85rem 1.15rem' }}>Order ID</th>
-                  <th style={{ padding: '0.85rem 1.15rem' }}>Customer</th>
-                  <th style={{ padding: '0.85rem 1.15rem' }}>Status</th>
-                  <th style={{ padding: '0.85rem 1.15rem' }}>Order Date</th>
-                  <th style={{ padding: '0.85rem 1.15rem' }}>Verification</th>
-                </tr>
-              </thead>
-              <tbody>
-                {orders.length > 0 ? (
-                  orders.map((ord) => {
-                    const isSelected = selectedOrder?.order_id === ord.order_id;
-                    const verified = isOrderVerified(ord.order_id);
+        <div className="table-container">
+          <table className="zm-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Status</th>
+                <th>Order Date</th>
+                <th>Verification</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.length > 0 ? (
+                orders.map((ord) => {
+                  const isSelected = selectedOrder?.order_id === ord.order_id;
+                  const verified = isOrderVerified(ord.order_id);
 
-                    return (
-                      <tr
-                        key={ord.order_id}
-                        onClick={() => handleOrderClick(ord)}
-                        style={{
-                          borderBottom: '1px solid var(--border-light)',
-                          backgroundColor: isSelected ? 'var(--accent-blue-subtle)' : 'transparent',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        <td style={{ padding: '0.95rem 1.15rem', fontFamily: 'var(--font-mono)', fontWeight: 800, color: 'var(--corp-navy)' }}>
-                          {ord.order_id}
-                        </td>
-                        <td style={{ padding: '0.95rem 1.15rem', color: 'var(--body-text)', fontWeight: 600 }}>
-                          {ord.customer_id}
-                        </td>
-                        <td style={{ padding: '0.95rem 1.15rem' }}>
-                          <span
-                            className={`badge ${
-                              ord.status === 'Delivered'
-                                ? 'badge-success'
-                                : ord.status === 'In Transit'
-                                ? 'badge-blue'
-                                : ord.status === 'Returned'
-                                ? 'badge-warning'
-                                : 'badge-muted'
-                            }`}
-                          >
-                            {ord.status}
+                  return (
+                    <tr
+                      key={ord.order_id}
+                      onClick={() => handleOrderClick(ord)}
+                      style={{
+                        backgroundColor: isSelected ? 'var(--soft-violet-subtle)' : 'transparent',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: 'var(--primary-indigo)' }}>
+                        {ord.order_id}
+                      </td>
+                      <td style={{ color: 'var(--body-text)', fontWeight: 600 }}>
+                        {ord.customer_id}
+                      </td>
+                      <td>
+                        <span
+                          className={`badge ${
+                            ord.status === 'Delivered'
+                              ? 'badge-success'
+                              : ord.status === 'In Transit'
+                              ? 'badge-violet'
+                              : ord.status === 'Returned'
+                              ? 'badge-warning'
+                              : 'badge-muted'
+                          }`}
+                        >
+                          {ord.status}
+                        </span>
+                      </td>
+                      <td style={{ color: 'var(--muted-text)', fontSize: '0.8rem' }}>
+                        {ord.order_date || '2026-10-15'}
+                      </td>
+                      <td>
+                        {verified ? (
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--success)', fontSize: '0.78rem', fontWeight: 700 }}>
+                            <Unlock size={14} /> Verified
                           </span>
-                        </td>
-                        <td style={{ padding: '0.95rem 1.15rem', color: 'var(--muted-text)', fontSize: '0.8rem' }}>
-                          {ord.order_date || '2026-10-15'}
-                        </td>
-                        <td style={{ padding: '0.95rem 1.15rem' }}>
-                          {verified ? (
-                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#0E703C', fontSize: '0.78rem', fontWeight: 700 }}>
-                              <Unlock size={14} /> Verified
-                            </span>
-                          ) : (
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                openVerifyModal(ord);
-                              }}
-                              className="btn-ghost"
-                              style={{ fontSize: '0.74rem', padding: '3px 8px', color: 'var(--accent-blue)' }}
-                            >
-                              <Lock size={13} />
-                              <span>Verify</span>
-                            </button>
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })
-                ) : (
-                  <tr>
-                    <td colSpan={5} style={{ padding: '2.5rem', textAlign: 'center', color: 'var(--muted-text)' }}>
-                      No orders found matching the filter criteria.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+                        ) : (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openVerifyModal(ord);
+                            }}
+                            className="btn-ghost"
+                            style={{ fontSize: '0.74rem', padding: '3px 8px', color: 'var(--accent-violet)' }}
+                          >
+                            <Lock size={13} />
+                            <span>Verify</span>
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan={5} style={{ padding: '2.5rem', textAlign: 'center', color: 'var(--muted-text)' }}>
+                    No orders found matching the filter criteria.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
 
         {/* Selected Order Detail & Verification Panel */}
@@ -313,22 +314,22 @@ export function Orders() {
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: '1px solid var(--border-light)', paddingBottom: '1.25rem', marginBottom: '1.5rem' }}>
                 <div>
-                  <div className="eyebrow" style={{ marginBottom: '0.2rem' }}>Order Telemetry</div>
-                  <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--corp-navy)', fontFamily: 'var(--font-mono)' }}>
+                  <span className="badge badge-violet" style={{ marginBottom: '0.2rem' }}>Order Telemetry</span>
+                  <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary-indigo)', fontFamily: 'var(--font-mono)' }}>
                     {selectedOrder.order_id}
                   </h2>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
-                  <span className={`badge ${selectedOrder.status === 'Delivered' ? 'badge-success' : 'badge-blue'}`}>
+                  <span className={`badge ${selectedOrder.status === 'Delivered' ? 'badge-success' : 'badge-violet'}`}>
                     {selectedOrder.status}
                   </span>
                   {isOrderVerified(selectedOrder.order_id) ? (
-                    <span style={{ fontSize: '0.74rem', color: '#0E703C', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <span style={{ fontSize: '0.74rem', color: 'var(--success)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
                       <ShieldCheck size={13} /> Customer Authenticated
                     </span>
                   ) : (
-                    <span style={{ fontSize: '0.74rem', color: '#B45309', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <span style={{ fontSize: '0.74rem', color: 'var(--warning)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
                       <Lock size={13} /> Unverified View
                     </span>
                   )}
@@ -337,30 +338,30 @@ export function Orders() {
 
               {/* Order Metadata Grid */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
-                <div style={{ padding: '0.85rem', backgroundColor: 'var(--bg-slate)', borderRadius: 'var(--radius-sm)' }}>
+                <div style={{ padding: '0.85rem', backgroundColor: 'var(--light-bg)', borderRadius: 'var(--radius-sm)' }}>
                   <div style={{ fontSize: '0.72rem', color: 'var(--muted-text)', fontWeight: 600 }}>Customer Reference</div>
-                  <div style={{ fontSize: '0.88rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+                  <div style={{ fontSize: '0.88rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
                     {selectedOrder.customer_id}
                   </div>
                 </div>
 
-                <div style={{ padding: '0.85rem', backgroundColor: 'var(--bg-slate)', borderRadius: 'var(--radius-sm)' }}>
+                <div style={{ padding: '0.85rem', backgroundColor: 'var(--light-bg)', borderRadius: 'var(--radius-sm)' }}>
                   <div style={{ fontSize: '0.72rem', color: 'var(--muted-text)', fontWeight: 600 }}>Promised Delivery Date</div>
-                  <div style={{ fontSize: '0.88rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+                  <div style={{ fontSize: '0.88rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
                     {selectedOrder.promised_delivery_date || selectedOrder.delivery_date || '2026-10-18'}
                   </div>
                 </div>
 
-                <div style={{ padding: '0.85rem', backgroundColor: 'var(--bg-slate)', borderRadius: 'var(--radius-sm)' }}>
+                <div style={{ padding: '0.85rem', backgroundColor: 'var(--light-bg)', borderRadius: 'var(--radius-sm)' }}>
                   <div style={{ fontSize: '0.72rem', color: 'var(--muted-text)', fontWeight: 600 }}>Destination Pincode</div>
-                  <div style={{ fontSize: '0.88rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+                  <div style={{ fontSize: '0.88rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
                     {selectedOrder.delivery_pincode || selectedOrder.pincode || '560001'}
                   </div>
                 </div>
 
-                <div style={{ padding: '0.85rem', backgroundColor: 'var(--bg-slate)', borderRadius: 'var(--radius-sm)' }}>
+                <div style={{ padding: '0.85rem', backgroundColor: 'var(--light-bg)', borderRadius: 'var(--radius-sm)' }}>
                   <div style={{ fontSize: '0.72rem', color: 'var(--muted-text)', fontWeight: 600 }}>Payment Method</div>
-                  <div style={{ fontSize: '0.88rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+                  <div style={{ fontSize: '0.88rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
                     {selectedOrder.payment_method || 'UPI / Prepaid'}
                   </div>
                 </div>
@@ -369,7 +370,7 @@ export function Orders() {
               {/* Protected Details */}
               {isOrderVerified(selectedOrder.order_id) ? (
                 <div>
-                  <h3 style={{ fontSize: '0.94rem', fontWeight: 800, color: 'var(--corp-navy)', marginBottom: '0.85rem' }}>
+                  <h3 style={{ fontSize: '0.94rem', fontWeight: 800, color: 'var(--primary-indigo)', marginBottom: '0.85rem' }}>
                     Purchased Items & Return Status
                   </h3>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginBottom: '1.5rem' }}>
@@ -396,7 +397,7 @@ export function Orders() {
                         }}
                       >
                         <div>
-                          <div style={{ fontSize: '0.86rem', fontWeight: 700, color: 'var(--corp-navy)' }}>
+                          <div style={{ fontSize: '0.86rem', fontWeight: 700, color: 'var(--primary-indigo)' }}>
                             {item.product_name}
                           </div>
                           <div style={{ fontSize: '0.74rem', color: 'var(--muted-text)' }}>
@@ -404,7 +405,7 @@ export function Orders() {
                           </div>
                         </div>
                         <div style={{ textAlign: 'right' }}>
-                          <div style={{ fontSize: '0.86rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+                          <div style={{ fontSize: '0.86rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
                             {item.price || '₹1,299'}
                           </div>
                           <span className={`badge ${item.return_eligible ? 'badge-success' : 'badge-error'}`} style={{ fontSize: '0.66rem', padding: '1px 6px' }}>
@@ -420,13 +421,13 @@ export function Orders() {
                     style={{
                       padding: '1rem',
                       borderRadius: 'var(--radius-sm)',
-                      backgroundColor: 'var(--accent-blue-subtle)',
-                      border: '1px solid rgba(0, 102, 255, 0.2)',
+                      backgroundColor: 'var(--soft-violet-subtle)',
+                      border: '1px solid rgba(114, 62, 207, 0.2)',
                       fontSize: '0.82rem',
-                      color: 'var(--corp-navy)',
+                      color: 'var(--primary-indigo)',
                     }}
                   >
-                    <div style={{ fontWeight: 800, color: 'var(--corp-navy)', marginBottom: '4px' }}>
+                    <div style={{ fontWeight: 800, color: 'var(--primary-indigo)', marginBottom: '4px' }}>
                       Calendar Days Evaluation (Ref: 20-Oct-2026):
                     </div>
                     <div>
@@ -439,13 +440,13 @@ export function Orders() {
                   style={{
                     padding: '2.5rem 1.5rem',
                     textAlign: 'center',
-                    backgroundColor: 'var(--bg-slate)',
+                    backgroundColor: 'var(--light-bg)',
                     borderRadius: 'var(--radius-md)',
                     border: '1px dashed var(--border-medium)',
                   }}
                 >
-                  <Lock size={30} color="#B45309" style={{ margin: '0 auto 0.85rem' }} />
-                  <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--corp-navy)', marginBottom: '0.4rem' }}>
+                  <Lock size={30} color="#D69A35" style={{ margin: '0 auto 0.85rem' }} />
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--primary-indigo)', marginBottom: '0.4rem' }}>
                     Customer Verification Required
                   </h3>
                   <p style={{ fontSize: '0.84rem', color: 'var(--muted-text)', maxWidth: '320px', margin: '0 auto 1.5rem', lineHeight: 1.55 }}>
@@ -475,7 +476,8 @@ export function Orders() {
           style={{
             position: 'fixed',
             inset: 0,
-            backgroundColor: 'rgba(0, 18, 46, 0.6)',
+            backgroundColor: 'rgba(16, 14, 45, 0.55)',
+            backdropFilter: 'blur(4px)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -484,19 +486,19 @@ export function Orders() {
           }}
         >
           <div
-            className="zm-card"
+            className="zm-card animate-slide-up"
             style={{
               width: '100%',
               maxWidth: '480px',
               padding: '2rem',
-              boxShadow: 'var(--shadow-lg)',
+              boxShadow: 'var(--shadow-xl)',
               backgroundColor: '#FFFFFF',
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                <ShieldCheck size={22} color="#0066FF" />
-                <h2 style={{ fontSize: '1.22rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+                <ShieldCheck size={22} color="#723ECF" />
+                <h2 style={{ fontSize: '1.22rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
                   Customer Authentication
                 </h2>
               </div>
@@ -519,7 +521,7 @@ export function Orders() {
                   padding: '0.75rem 1rem',
                   backgroundColor: 'var(--error-subtle)',
                   borderRadius: 'var(--radius-sm)',
-                  border: '1px solid rgba(209, 52, 56, 0.25)',
+                  border: '1px solid var(--error-border)',
                   color: 'var(--error)',
                   fontSize: '0.82rem',
                   marginBottom: '1.25rem',
@@ -531,7 +533,7 @@ export function Orders() {
 
             <form onSubmit={handleVerifySubmit}>
               <div style={{ marginBottom: '1.5rem' }}>
-                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--corp-navy)', marginBottom: '0.45rem' }}>
+                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--primary-indigo)', marginBottom: '0.45rem' }}>
                   Verification Credential (e.g. {targetOrderForVerify.customer_id})
                 </label>
                 <input
@@ -561,7 +563,7 @@ export function Orders() {
                 <button
                   type="submit"
                   disabled={verifyLoading || !verificationInput.trim()}
-                  className="btn-blue"
+                  className="btn-primary"
                 >
                   {verifyLoading ? 'Verifying...' : 'Authenticate & Reveal'}
                 </button>
