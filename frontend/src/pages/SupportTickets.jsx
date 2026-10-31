@@ -14,6 +14,7 @@ import {
   X,
   ShieldAlert,
   Layers,
+  Sparkles,
 } from 'lucide-react';
 import { api } from '../services/api';
 import { EmptyState } from '../components/EmptyState';
@@ -92,7 +93,7 @@ export function SupportTickets() {
   });
 
   return (
-    <div className="page-body">
+    <div className="page-body animate-fade-in">
       {/* Header */}
       <div
         style={{
@@ -101,15 +102,15 @@ export function SupportTickets() {
           alignItems: 'flex-start',
           marginBottom: '2rem',
           flexWrap: 'wrap',
-          gap: '1rem',
+          gap: '1.25rem',
         }}
       >
         <div>
-          <div className="eyebrow" style={{ marginBottom: '0.45rem' }}>
-            <Layers size={13} />
-            <span>Human-in-the-Loop • Escalation Operations</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.45rem' }}>
+            <span className="badge badge-violet">Human-in-the-Loop</span>
+            <span className="badge badge-muted">Escalation Operations</span>
           </div>
-          <h1 style={{ fontSize: '2.15rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+          <h1 style={{ fontSize: '2.15rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
             Support Tickets & Escalations
           </h1>
           <p style={{ color: 'var(--muted-text)', fontSize: '0.96rem' }}>
@@ -135,7 +136,7 @@ export function SupportTickets() {
         style={{
           padding: '1.15rem 1.75rem',
           backgroundColor: '#FFFFFF',
-          borderLeft: '4px solid #B45309',
+          borderLeft: '4px solid var(--warning)',
           marginBottom: '1.75rem',
           display: 'flex',
           alignItems: 'center',
@@ -145,9 +146,9 @@ export function SupportTickets() {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <ShieldAlert size={20} color="#B45309" />
+          <ShieldAlert size={20} color="#D69A35" />
           <span style={{ fontSize: '0.86rem', color: 'var(--body-text)' }}>
-            <strong style={{ color: 'var(--corp-navy)' }}>Escalation Protocol:</strong> The AI support agent only confirms ticket creation to the customer after <code>create_ticket(summary)</code> returns <code>created=True</code>.
+            <strong style={{ color: 'var(--primary-indigo)' }}>Escalation Protocol:</strong> The AI support agent only confirms ticket creation to the customer after <code>create_ticket(summary)</code> returns <code>created=True</code>.
           </span>
         </div>
         <span style={{ fontSize: '0.78rem', color: 'var(--muted-text)', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
@@ -158,7 +159,7 @@ export function SupportTickets() {
       {/* Filter & Search Bar */}
       <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
         <div style={{ flex: 1, minWidth: '280px', position: 'relative', display: 'flex', alignItems: 'center' }}>
-          <Search size={16} color="#64748B" style={{ position: 'absolute', left: '12px', pointerEvents: 'none' }} />
+          <Search size={16} color="#77758A" style={{ position: 'absolute', left: '12px', pointerEvents: 'none' }} />
           <input
             type="text"
             value={searchQuery}
@@ -166,7 +167,7 @@ export function SupportTickets() {
             placeholder="Search tickets by ID, summary, or customer reference..."
             style={{
               width: '100%',
-              padding: '0.6rem 0.85rem 0.6rem 2.35rem',
+              padding: '0.62rem 0.85rem 0.62rem 2.35rem',
               borderRadius: 'var(--radius-sm)',
               border: '1px solid var(--border-medium)',
               backgroundColor: '#FFFFFF',
@@ -185,9 +186,11 @@ export function SupportTickets() {
                 borderRadius: 'var(--radius-sm)',
                 fontSize: '0.78rem',
                 fontWeight: 700,
-                backgroundColor: statusFilter === st ? 'var(--corp-navy)' : '#FFFFFF',
-                color: statusFilter === st ? '#FFFFFF' : 'var(--corp-navy)',
-                border: statusFilter === st ? '1px solid var(--corp-navy)' : '1px solid var(--border-light)',
+                backgroundColor: statusFilter === st ? 'var(--primary-indigo)' : '#FFFFFF',
+                color: statusFilter === st ? '#FFFFFF' : 'var(--primary-indigo)',
+                border: statusFilter === st ? '1px solid var(--primary-indigo)' : '1px solid var(--border-card)',
+                cursor: 'pointer',
+                transition: 'all var(--transition-fast)',
               }}
             >
               {st === 'all' ? 'All Tickets' : st}
@@ -197,84 +200,82 @@ export function SupportTickets() {
       </div>
 
       {/* Tickets List */}
-      <div className="zm-card" style={{ overflow: 'hidden' }}>
-        <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.86rem' }}>
-            <thead>
-              <tr style={{ backgroundColor: 'var(--bg-slate)', borderBottom: '1px solid var(--border-light)', color: 'var(--corp-navy)', fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 800 }}>
-                <th style={{ padding: '0.85rem 1.15rem' }}>Ticket ID</th>
-                <th style={{ padding: '0.85rem 1.15rem' }}>Summary & Context</th>
-                <th style={{ padding: '0.85rem 1.15rem' }}>Customer / Order</th>
-                <th style={{ padding: '0.85rem 1.15rem' }}>Escalation Reason</th>
-                <th style={{ padding: '0.85rem 1.15rem' }}>Status</th>
-                <th style={{ padding: '0.85rem 1.15rem' }}>Created At</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredTickets.length > 0 ? (
-                filteredTickets.map((t) => (
-                  <tr key={t.ticket_id} style={{ borderBottom: '1px solid var(--border-light)' }}>
-                    <td style={{ padding: '0.95rem 1.15rem', fontFamily: 'var(--font-mono)', fontWeight: 800, color: 'var(--accent-blue)' }}>
-                      #{t.ticket_id}
-                    </td>
-                    <td style={{ padding: '0.95rem 1.15rem' }}>
-                      <div style={{ fontWeight: 700, color: 'var(--corp-navy)' }}>
-                        {t.summary}
+      <div className="table-container">
+        <table className="zm-table">
+          <thead>
+            <tr>
+              <th>Ticket ID</th>
+              <th>Summary & Context</th>
+              <th>Customer / Order</th>
+              <th>Escalation Reason</th>
+              <th>Status</th>
+              <th>Created At</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredTickets.length > 0 ? (
+              filteredTickets.map((t) => (
+                <tr key={t.ticket_id}>
+                  <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: 'var(--accent-violet)' }}>
+                    #{t.ticket_id}
+                  </td>
+                  <td>
+                    <div style={{ fontWeight: 700, color: 'var(--primary-indigo)' }}>
+                      {t.summary}
+                    </div>
+                    {t.resolution_status && (
+                      <div style={{ fontSize: '0.74rem', color: 'var(--muted-text)', marginTop: '2px' }}>
+                        Assignment: {t.resolution_status}
                       </div>
-                      {t.resolution_status && (
-                        <div style={{ fontSize: '0.74rem', color: 'var(--muted-text)', marginTop: '2px' }}>
-                          Assignment: {t.resolution_status}
-                        </div>
+                    )}
+                  </td>
+                  <td>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', fontSize: '0.76rem' }}>
+                      {t.customer_id && (
+                        <span style={{ color: 'var(--primary-indigo)', fontWeight: 700 }}>
+                          {t.customer_id}
+                        </span>
                       )}
-                    </td>
-                    <td style={{ padding: '0.95rem 1.15rem' }}>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', fontSize: '0.76rem' }}>
-                        {t.customer_id && (
-                          <span style={{ color: 'var(--corp-navy)', fontWeight: 700 }}>
-                            {t.customer_id}
-                          </span>
-                        )}
-                        {t.order_id && (
-                          <span style={{ color: 'var(--muted-text)', fontFamily: 'var(--font-mono)' }}>
-                            {t.order_id}
-                          </span>
-                        )}
-                        {!t.customer_id && !t.order_id && (
-                          <span style={{ color: 'var(--muted-text)' }}>—</span>
-                        )}
-                      </div>
-                    </td>
-                    <td style={{ padding: '0.95rem 1.15rem', color: 'var(--body-text)', fontSize: '0.8rem' }}>
-                      {t.escalation_reason || 'Policy requires human intervention'}
-                    </td>
-                    <td style={{ padding: '0.95rem 1.15rem' }}>
-                      <span
-                        className={`badge ${
-                          t.status === 'Resolved'
-                            ? 'badge-success'
-                            : t.status === 'In Progress'
-                            ? 'badge-blue'
-                            : 'badge-warning'
-                        }`}
-                      >
-                        {t.status || 'Open'}
-                      </span>
-                    </td>
-                    <td style={{ padding: '0.95rem 1.15rem', color: 'var(--muted-text)', fontSize: '0.76rem', whiteSpace: 'nowrap' }}>
-                      {t.created_at || '2026-10-20 14:30'}
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={6} style={{ padding: '2.5rem', textAlign: 'center', color: 'var(--muted-text)' }}>
-                    No support tickets found matching your criteria.
+                      {t.order_id && (
+                        <span style={{ color: 'var(--muted-text)', fontFamily: 'var(--font-mono)' }}>
+                          {t.order_id}
+                        </span>
+                      )}
+                      {!t.customer_id && !t.order_id && (
+                        <span style={{ color: 'var(--muted-text)' }}>—</span>
+                      )}
+                    </div>
+                  </td>
+                  <td style={{ color: 'var(--body-text)', fontSize: '0.8rem' }}>
+                    {t.escalation_reason || 'Policy requires human intervention'}
+                  </td>
+                  <td>
+                    <span
+                      className={`badge ${
+                        t.status === 'Resolved'
+                          ? 'badge-success'
+                          : t.status === 'In Progress'
+                          ? 'badge-violet'
+                          : 'badge-warning'
+                      }`}
+                    >
+                      {t.status || 'Open'}
+                    </span>
+                  </td>
+                  <td style={{ color: 'var(--muted-text)', fontSize: '0.76rem', whiteSpace: 'nowrap' }}>
+                    {t.created_at || '2026-10-20 14:30'}
                   </td>
                 </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={6} style={{ padding: '2.5rem', textAlign: 'center', color: 'var(--muted-text)' }}>
+                  No support tickets found matching your criteria.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
 
       {/* Manual Create Ticket Modal */}
@@ -283,7 +284,8 @@ export function SupportTickets() {
           style={{
             position: 'fixed',
             inset: 0,
-            backgroundColor: 'rgba(0, 18, 46, 0.6)',
+            backgroundColor: 'rgba(16, 14, 45, 0.55)',
+            backdropFilter: 'blur(4px)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -292,19 +294,19 @@ export function SupportTickets() {
           }}
         >
           <div
-            className="zm-card"
+            className="zm-card animate-slide-up"
             style={{
               width: '100%',
               maxWidth: '540px',
               padding: '2rem',
               backgroundColor: '#FFFFFF',
-              boxShadow: 'var(--shadow-lg)',
+              boxShadow: 'var(--shadow-xl)',
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                <LifeBuoy size={22} color="#0066FF" />
-                <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+                <LifeBuoy size={22} color="#723ECF" />
+                <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
                   Create Support Escalation Ticket
                 </h2>
               </div>
@@ -319,7 +321,7 @@ export function SupportTickets() {
                   padding: '0.75rem 1rem',
                   backgroundColor: 'var(--error-subtle)',
                   borderRadius: 'var(--radius-sm)',
-                  border: '1px solid rgba(209, 52, 56, 0.25)',
+                  border: '1px solid var(--error-border)',
                   color: 'var(--error)',
                   fontSize: '0.82rem',
                   marginBottom: '1.25rem',
@@ -331,7 +333,7 @@ export function SupportTickets() {
 
             <form onSubmit={handleCreateTicket}>
               <div style={{ marginBottom: '1.25rem' }}>
-                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--corp-navy)', marginBottom: '0.4rem' }}>
+                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--primary-indigo)', marginBottom: '0.4rem' }}>
                   Ticket Summary (Issue Description) *
                 </label>
                 <textarea
@@ -352,17 +354,17 @@ export function SupportTickets() {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--corp-navy)', marginBottom: '0.4rem' }}>
-                    Customer ID (Optional)
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--primary-indigo)', marginBottom: '0.4rem' }}>
+                    Customer Reference ID
                   </label>
                   <input
                     type="text"
                     value={newCustomerRef}
                     onChange={(e) => setNewCustomerRef(e.target.value)}
-                    placeholder="e.g. CUST-104"
+                    placeholder="e.g. CUST-1045"
                     style={{
                       width: '100%',
-                      padding: '0.6rem 0.85rem',
+                      padding: '0.62rem 0.85rem',
                       borderRadius: 'var(--radius-sm)',
                       border: '1px solid var(--border-medium)',
                       fontSize: '0.88rem',
@@ -371,8 +373,8 @@ export function SupportTickets() {
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--corp-navy)', marginBottom: '0.4rem' }}>
-                    Order ID (Optional)
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--primary-indigo)', marginBottom: '0.4rem' }}>
+                    Related Order ID
                   </label>
                   <input
                     type="text"
@@ -381,7 +383,7 @@ export function SupportTickets() {
                     placeholder="e.g. ORD-1022"
                     style={{
                       width: '100%',
-                      padding: '0.6rem 0.85rem',
+                      padding: '0.62rem 0.85rem',
                       borderRadius: 'var(--radius-sm)',
                       border: '1px solid var(--border-medium)',
                       fontSize: '0.88rem',
@@ -390,16 +392,16 @@ export function SupportTickets() {
                 </div>
               </div>
 
-              <div style={{ marginBottom: '1.5rem' }}>
-                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--corp-navy)', marginBottom: '0.4rem' }}>
-                  Escalation Reason
+              <div style={{ marginBottom: '1.75rem' }}>
+                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--primary-indigo)', marginBottom: '0.4rem' }}>
+                  Escalation Trigger Reason
                 </label>
                 <select
                   value={newReason}
                   onChange={(e) => setNewReason(e.target.value)}
                   style={{
                     width: '100%',
-                    padding: '0.6rem 0.85rem',
+                    padding: '0.62rem 0.85rem',
                     borderRadius: 'var(--radius-sm)',
                     border: '1px solid var(--border-medium)',
                     fontSize: '0.88rem',
@@ -409,15 +411,13 @@ export function SupportTickets() {
                   <option value="Damaged goods / exception requires manual review">
                     Damaged goods / exception requires manual review
                   </option>
-                  <option value="Delivery exceeded promised date beyond policy tolerance">
-                    Delivery exceeded promised date beyond policy tolerance
+                  <option value="Delivery exceeded SLA cutoff deadline">
+                    Delivery exceeded SLA cutoff deadline
                   </option>
                   <option value="Customer dispute on return eligibility">
                     Customer dispute on return eligibility
                   </option>
-                  <option value="High-value refund authorization required">
-                    High-value refund authorization required
-                  </option>
+                  <option value="Refund amount discrepancy">Refund amount discrepancy</option>
                 </select>
               </div>
 
@@ -434,7 +434,7 @@ export function SupportTickets() {
                   disabled={creating || !newSummary.trim()}
                   className="btn-primary"
                 >
-                  {creating ? 'Creating Ticket...' : 'Confirm Escalation'}
+                  {creating ? 'Registering Ticket...' : 'Create Ticket'}
                 </button>
               </div>
             </form>
