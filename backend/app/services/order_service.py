@@ -308,30 +308,82 @@ class OrderService:
         if match_items.empty:
             return []
 
+        
         items_list = []
         prod_df = self.ds.products_df
 
         for _, row in match_items.iterrows():
             item_data = row.to_dict()
-            prod_id = item_data.get("product_id") or item_data.get("Product ID")
+
+            # Match order item to product using SKU
+            sku = item_data.get("sku") or item_data.get("product_id")
 
             prod_info = {}
-            if prod_df is not None and prod_id:
-                p_col = next((c for c in prod_df.columns if "product_id" in c.lower() or c.lower() == "id"), None)
+            if prod_df is not None and sku:
+                p_col = next(
+                    (c for c in prod_df.columns if c.lower() == "sku"),
+                    None
+                )
+
                 if p_col:
-                    p_match = prod_df[prod_df[p_col].str.lower() == str(prod_id).strip().lower()]
+                    p_match = prod_df[
+                        prod_df[p_col].astype(str).str.strip().str.lower()
+                        == str(sku).strip().lower()
+                    ]
+
                     if not p_match.empty:
                         prod_info = p_match.iloc[0].to_dict()
 
+            # Safely read warranty duration
+            warranty_months = prod_info.get("warranty_months", 0)
+            try:
+                warranty_months = int(warranty_months or 0)
+            except (ValueError, TypeError):
+                warranty_months = 0
+
+            return_eligible = str(
+                prod_info.get("return_eligible", "True")
+            ).strip().lower() in ("true", "1", "yes")
+
             items_list.append({
-                "item_id": item_data.get("order_item_id") or item_data.get("item_id"),
-                "product_id": prod_id,
-                "product_name": prod_info.get("product_name") or item_data.get("product_name") or f"Product {prod_id}",
-                "price": prod_info.get("price") or item_data.get("price") or "₹1,499",
-                "category": prod_info.get("category") or item_data.get("category") or "General Merchandise",
-                "return_eligible": prod_info.get("return_eligible", "True").lower() in ("true", "1", "yes"),
-                "return_window_days": int(prod_info.get("return_window_days", 7)),
-            })
+    "item_id": (
+        item_data.get("order_item_id")
+        or item_data.get("item_id")
+        or item_data.get("line_no")
+    ),
+    "product_id": sku,
+    "sku": sku,
+    "product_name": (
+        prod_info.get("product_name")
+        or item_data.get("product_name")
+        or f"Product {sku}"
+    ),
+    "brand": prod_info.get("brand", ""),
+    "price": (
+        prod_info.get("price_inr")
+        or item_data.get("unit_price_inr")
+        or item_data.get("price")
+        or "0"
+    ),
+    "category": (
+        prod_info.get("category")
+        or item_data.get("category")
+        or "General Merchandise"
+    ),
+    "fulfilled_by": prod_info.get("fulfilled_by", ""),
+    "assured": str(
+        prod_info.get("assured", "False")
+    ).strip().lower() in ("true", "1", "yes"),
+    "warranty_months": warranty_months,
+    "description": prod_info.get("description", ""),
+    "return_eligible": return_eligible,
+    "return_window_days": int(
+        prod_info.get("return_window_days", 7) or 7
+    ),
+})
+
+        return items_list
+
 
         return items_list
 
