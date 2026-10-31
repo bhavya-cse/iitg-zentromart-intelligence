@@ -1,45 +1,77 @@
 import React from 'react';
 
-export function Logo({ collapsed = false, className = '' }) {
+export function Logo({
+  collapsed = false,
+  size = 'md',
+  theme = 'light',
+  className = '',
+  showTag = true,
+}) {
+  const iconDimensions = {
+    sm: 28,
+    md: 36,
+    lg: 44,
+  }[size] || 36;
+
+  const isDark = theme === 'dark';
+
   return (
     <div
       className={`select-none ${className}`}
-      style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: collapsed ? '0' : '0.85rem',
+        textDecoration: 'none',
+      }}
     >
-      {/* Precision Geometric Corporate Identity */}
+      {/* Precision Geometric Z-Prism & Connected Intelligence Symbol */}
       <div
         style={{
-          width: '36px',
-          height: '36px',
-          borderRadius: '6px',
-          background: 'linear-gradient(135deg, #00122E 0%, #0A192F 100%)',
+          width: `${iconDimensions}px`,
+          height: `${iconDimensions}px`,
+          borderRadius: size === 'sm' ? '6px' : '9px',
+          background: 'linear-gradient(135deg, #17143F 0%, #29245B 100%)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          border: '1px solid #E2E8F0',
-          boxShadow: '0 2px 8px rgba(0, 18, 46, 0.12)',
+          border: '1px solid rgba(114, 62, 207, 0.28)',
+          boxShadow: '0 3px 10px rgba(23, 20, 63, 0.16), 0 0 0 1px rgba(255, 255, 255, 0.06) inset',
           flexShrink: 0,
           position: 'relative',
+          transition: 'transform var(--transition-fast)',
         }}
+        title="ZentroMart Intelligence"
       >
-        <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
-          <rect
-            x="4"
-            y="4"
-            width="24"
-            height="24"
-            rx="4"
-            stroke="#0066FF"
-            strokeWidth="2"
-          />
+        <svg
+          width={Math.round(iconDimensions * 0.65)}
+          height={Math.round(iconDimensions * 0.65)}
+          viewBox="0 0 32 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {/* Subtle geometric grid background */}
           <path
-            d="M9 11H23L11 21H23"
-            stroke="#FFFFFF"
+            d="M16 2L29 9.5V22.5L16 30L3 22.5V9.5L16 2Z"
+            stroke="#723ECF"
+            strokeWidth="1.2"
+            strokeOpacity="0.4"
+          />
+          {/* Isometric faceted Z-path of intelligence */}
+          <path
+            d="M9 10.5H23L11 21.5H23"
+            stroke="#EDE7FA"
             strokeWidth="2.4"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
-          <circle cx="21" cy="11" r="2" fill="#0066FF" />
+          {/* Neural connectivity nexus nodes */}
+          <circle cx="23" cy="10.5" r="2.2" fill="#723ECF" stroke="#FFFFFF" strokeWidth="1" />
+          <circle cx="9" cy="10.5" r="1.8" fill="#EDE7FA" />
+          <circle cx="11" cy="21.5" r="1.8" fill="#EDE7FA" />
+          <circle cx="23" cy="21.5" r="2.2" fill="#723ECF" stroke="#FFFFFF" strokeWidth="1" />
+          {/* Central core node */}
+          <circle cx="17" cy="16" r="1.5" fill="#723ECF" />
         </svg>
       </div>
 
@@ -49,37 +81,41 @@ export function Logo({ collapsed = false, className = '' }) {
             <span
               style={{
                 fontFamily: 'var(--font-heading)',
-                fontSize: '1.22rem',
+                fontSize: size === 'lg' ? '1.45rem' : '1.25rem',
                 fontWeight: 800,
-                color: 'var(--corp-navy)',
-                letterSpacing: '-0.025em',
+                color: isDark ? '#FFFFFF' : 'var(--primary-indigo)',
+                letterSpacing: '-0.028em',
               }}
             >
               ZentroMart
             </span>
-            <span
-              style={{
-                fontFamily: 'var(--font-body)',
-                fontSize: '0.64rem',
-                fontWeight: 700,
-                color: '#0066FF',
-                background: '#E8F1FF',
-                padding: '0.12rem 0.4rem',
-                borderRadius: '3px',
-                border: '1px solid rgba(0, 102, 255, 0.2)',
-                letterSpacing: '0.06em',
-                textTransform: 'uppercase',
-              }}
-            >
-              ENTERPRISE
-            </span>
+            {showTag && (
+              <span
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  fontSize: '0.62rem',
+                  fontWeight: 700,
+                  color: 'var(--accent-violet)',
+                  background: 'var(--soft-violet)',
+                  padding: '0.12rem 0.42rem',
+                  borderRadius: 'var(--radius-xs)',
+                  border: '1px solid rgba(114, 62, 207, 0.22)',
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                AI
+              </span>
+            )}
           </div>
           <span
             style={{
-              fontSize: '0.72rem',
-              color: 'var(--muted-text)',
-              fontWeight: 500,
-              letterSpacing: '0.02em',
+              fontSize: '0.68rem',
+              fontWeight: 700,
+              color: isDark ? 'rgba(255, 255, 255, 0.6)' : 'var(--muted-text)',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              marginTop: '1px',
             }}
           >
             Intelligence Platform
