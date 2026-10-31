@@ -541,6 +541,10 @@ textarea::placeholder {
    Responsive Shell Rules
    ========================================================================== */
 @media (max-width: 900px) {
+  .chat-sidebar {
+    display: none !important;
+  }
+
   .app-sidebar {
     position: fixed !important;
     left: 0;

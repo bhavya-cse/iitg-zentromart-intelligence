@@ -6,6 +6,7 @@ import {
   ShieldCheck,
   Clock,
   Sparkles,
+  ExternalLink,
 } from 'lucide-react';
 
 export function EvidenceDrawer({ sources = [], className = '' }) {
@@ -22,13 +23,13 @@ export function EvidenceDrawer({ sources = [], className = '' }) {
       style={{
         marginTop: '0.85rem',
         borderRadius: 'var(--radius-sm)',
-        border: '1px solid var(--border-light)',
-        backgroundColor: 'var(--bg-neutral)',
+        border: '1px solid var(--border-card)',
+        backgroundColor: 'var(--light-bg)',
         overflow: 'hidden',
         transition: 'all var(--transition-fast)',
       }}
     >
-      {/* Header bar */}
+      {/* Header Bar */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         style={{
@@ -37,27 +38,30 @@ export function EvidenceDrawer({ sources = [], className = '' }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          backgroundColor: isExpanded ? '#FFFFFF' : 'var(--bg-slate)',
-          borderBottom: isExpanded ? '1px solid var(--border-light)' : 'none',
+          backgroundColor: isExpanded ? '#FFFFFF' : 'var(--surface-subtle)',
+          borderBottom: isExpanded ? '1px solid var(--border-card)' : 'none',
+          cursor: 'pointer',
+          border: 'none',
+          outline: 'none',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-          <Sparkles size={14} color="#0066FF" />
-          <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--corp-navy)' }}>
+          <Sparkles size={14} color="#723ECF" />
+          <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--primary-indigo)' }}>
             Grounded Policy Evidence ({sources.length} {sources.length === 1 ? 'source' : 'sources'} cited)
           </span>
-          <span className="badge badge-success" style={{ fontSize: '0.68rem', padding: '1px 6px' }}>
-            Verified RAG
+          <span className="badge badge-violet" style={{ fontSize: '0.66rem', padding: '1px 6px' }}>
+            Verified RAG v4
           </span>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--muted-text)', fontSize: '0.76rem', fontWeight: 600 }}>
           <span>{isExpanded ? 'Hide Evidence' : 'Inspect Policy Citations'}</span>
-          {isExpanded ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
+          {isExpanded ? <ChevronUp size={15} color="#723ECF" /> : <ChevronDown size={15} />}
         </div>
       </button>
 
-      {/* Expanded evidence list & excerpt viewer */}
+      {/* Expanded Evidence List & Excerpt Viewer */}
       {isExpanded && (
         <div style={{ padding: '1rem', backgroundColor: '#FFFFFF' }}>
           {/* Source Tabs */}
@@ -85,22 +89,24 @@ export function EvidenceDrawer({ sources = [], className = '' }) {
                     gap: '0.5rem',
                     padding: '0.4rem 0.85rem',
                     borderRadius: 'var(--radius-xs)',
-                    backgroundColor: isSelected ? 'var(--corp-navy)' : 'var(--bg-slate)',
-                    color: isSelected ? '#FFFFFF' : 'var(--corp-navy)',
-                    border: isSelected ? '1px solid var(--corp-navy)' : '1px solid var(--border-light)',
+                    backgroundColor: isSelected ? 'var(--primary-indigo)' : 'var(--light-bg)',
+                    color: isSelected ? '#FFFFFF' : 'var(--primary-indigo)',
+                    border: isSelected ? '1px solid var(--primary-indigo)' : '1px solid var(--border-light)',
                     fontSize: '0.78rem',
                     fontWeight: isSelected ? 700 : 600,
                     whiteSpace: 'nowrap',
+                    cursor: 'pointer',
+                    transition: 'all var(--transition-fast)',
                   }}
                 >
-                  <FileText size={13} color={isSelected ? '#0066FF' : '#64748B'} />
+                  <FileText size={13} color={isSelected ? '#EDE7FA' : '#77758A'} />
                   <span>{src.doc_name || src.doc_id || `Policy ${idx + 1}`}</span>
                   {src.section_id && (
                     <span
                       style={{
                         fontSize: '0.66rem',
                         fontFamily: 'var(--font-mono)',
-                        opacity: isSelected ? 0.85 : 0.7,
+                        opacity: isSelected ? 0.9 : 0.7,
                       }}
                     >
                       §{src.section_id}
@@ -109,10 +115,10 @@ export function EvidenceDrawer({ sources = [], className = '' }) {
                   {isLatest && (
                     <span
                       style={{
-                        width: '5px',
-                        height: '5px',
+                        width: '5.5px',
+                        height: '5.5px',
                         borderRadius: '50%',
-                        backgroundColor: '#0E703C',
+                        backgroundColor: 'var(--success)',
                       }}
                       title="Active Precedence Policy"
                     />
@@ -126,9 +132,9 @@ export function EvidenceDrawer({ sources = [], className = '' }) {
           {sources[selectedSource] && (
             <div
               style={{
-                backgroundColor: 'var(--bg-neutral)',
+                backgroundColor: 'var(--light-bg)',
                 borderRadius: 'var(--radius-xs)',
-                border: '1px solid var(--border-light)',
+                border: '1px solid var(--border-card)',
                 padding: '1rem',
               }}
             >
@@ -144,11 +150,11 @@ export function EvidenceDrawer({ sources = [], className = '' }) {
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                  <span style={{ fontWeight: 800, color: 'var(--corp-navy)' }}>
+                  <span style={{ fontWeight: 800, color: 'var(--primary-indigo)' }}>
                     {sources[selectedSource].title || sources[selectedSource].doc_name}
                   </span>
                   {sources[selectedSource].category && (
-                    <span className="badge badge-blue">
+                    <span className="badge badge-violet">
                       {sources[selectedSource].category}
                     </span>
                   )}
@@ -163,19 +169,19 @@ export function EvidenceDrawer({ sources = [], className = '' }) {
                       }}
                     >
                       <Clock size={11} />
-                      Eff: {sources[selectedSource].effective_date}
+                      Effective: {sources[selectedSource].effective_date}
                     </span>
                   )}
                 </div>
 
                 {sources[selectedSource].relevance_score !== undefined && (
-                  <span style={{ fontSize: '0.72rem', color: 'var(--accent-blue)', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>
-                    Relevance: {Math.round(sources[selectedSource].relevance_score * 100)}%
+                  <span style={{ fontSize: '0.72rem', color: 'var(--accent-violet)', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>
+                    Match Confidence: {Math.round(sources[selectedSource].relevance_score * 100)}%
                   </span>
                 )}
               </div>
 
-              {/* Excerpt text */}
+              {/* Excerpt Text */}
               <div
                 style={{
                   fontFamily: 'var(--font-body)',
@@ -184,7 +190,7 @@ export function EvidenceDrawer({ sources = [], className = '' }) {
                   backgroundColor: '#FFFFFF',
                   padding: '0.85rem 1rem',
                   borderRadius: 'var(--radius-xs)',
-                  borderLeft: '3px solid var(--accent-blue)',
+                  borderLeft: '3px solid var(--accent-violet)',
                   lineHeight: 1.6,
                   maxHeight: '200px',
                   overflowY: 'auto',
