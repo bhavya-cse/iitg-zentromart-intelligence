@@ -10,6 +10,9 @@ import {
   Calendar,
   Layers,
   Sparkles,
+  CheckCircle2,
+  ChevronRight,
+  Filter,
 } from 'lucide-react';
 import { api } from '../services/api';
 import { EmptyState } from '../components/EmptyState';
@@ -66,7 +69,7 @@ export function KnowledgeBase() {
   });
 
   return (
-    <div className="page-body">
+    <div className="page-body animate-fade-in">
       {/* Page Title & Actions */}
       <div
         style={{
@@ -75,15 +78,15 @@ export function KnowledgeBase() {
           alignItems: 'flex-start',
           marginBottom: '2rem',
           flexWrap: 'wrap',
-          gap: '1rem',
+          gap: '1.25rem',
         }}
       >
         <div>
-          <div className="eyebrow" style={{ marginBottom: '0.45rem' }}>
-            <Layers size={13} />
-            <span>Authoritative Policy Store • Multi-Turn Vector RAG</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.45rem' }}>
+            <span className="badge badge-violet">Authoritative Policy Store</span>
+            <span className="badge badge-muted">Multi-Turn Vector RAG</span>
           </div>
-          <h1 style={{ fontSize: '2.15rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+          <h1 style={{ fontSize: '2.15rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
             Knowledge Base
           </h1>
           <p style={{ color: 'var(--muted-text)', fontSize: '0.96rem' }}>
@@ -108,7 +111,7 @@ export function KnowledgeBase() {
         style={{
           padding: '1.25rem 1.75rem',
           backgroundColor: '#FFFFFF',
-          borderLeft: '4px solid var(--accent-blue)',
+          borderLeft: '4px solid var(--accent-violet)',
           marginBottom: '1.75rem',
           display: 'flex',
           alignItems: 'center',
@@ -118,10 +121,10 @@ export function KnowledgeBase() {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-          <ShieldCheck size={22} color="#0066FF" />
+          <ShieldCheck size={22} color="#723ECF" />
           <div style={{ fontSize: '0.86rem', color: 'var(--body-text)' }}>
-            <strong style={{ color: 'var(--corp-navy)' }}>Precedence Chain:</strong>{' '}
-            <span style={{ color: 'var(--accent-blue)', fontWeight: 700 }}>Current Policies (v4)</span> →{' '}
+            <strong style={{ color: 'var(--primary-indigo)' }}>Precedence Chain:</strong>{' '}
+            <span style={{ color: 'var(--accent-violet)', fontWeight: 700 }}>Current Policies (v4)</span> →{' '}
             <span>Agent Guides</span> → <span>Help Documents</span> → <span>FAQs</span> →{' '}
             <span style={{ color: 'var(--muted-text)' }}>Marketing Documents</span>.
           </div>
@@ -154,7 +157,7 @@ export function KnowledgeBase() {
         >
           <Search
             size={16}
-            color="#64748B"
+            color="#77758A"
             style={{ position: 'absolute', left: '12px', pointerEvents: 'none' }}
           />
           <input
@@ -164,7 +167,7 @@ export function KnowledgeBase() {
             placeholder="Search documents by ID, policy section, or keywords..."
             style={{
               width: '100%',
-              padding: '0.6rem 0.85rem 0.6rem 2.35rem',
+              padding: '0.62rem 0.85rem 0.62rem 2.35rem',
               borderRadius: 'var(--radius-sm)',
               border: '1px solid var(--border-medium)',
               backgroundColor: '#FFFFFF',
@@ -185,9 +188,11 @@ export function KnowledgeBase() {
                 fontSize: '0.78rem',
                 fontWeight: 700,
                 textTransform: 'capitalize',
-                backgroundColor: selectedCategory === cat ? 'var(--corp-navy)' : '#FFFFFF',
-                color: selectedCategory === cat ? '#FFFFFF' : 'var(--corp-navy)',
-                border: selectedCategory === cat ? '1px solid var(--corp-navy)' : '1px solid var(--border-light)',
+                backgroundColor: selectedCategory === cat ? 'var(--primary-indigo)' : '#FFFFFF',
+                color: selectedCategory === cat ? '#FFFFFF' : 'var(--primary-indigo)',
+                border: selectedCategory === cat ? '1px solid var(--primary-indigo)' : '1px solid var(--border-card)',
+                cursor: 'pointer',
+                transition: 'all var(--transition-fast)',
               }}
             >
               {cat === 'all' ? 'All Policies' : cat}
@@ -209,19 +214,18 @@ export function KnowledgeBase() {
                 <div
                   key={doc.id}
                   onClick={() => setActiveDoc(doc)}
-                  className="zm-card"
+                  className="zm-card zm-card-interactive"
                   style={{
                     padding: '1.15rem 1.35rem',
-                    cursor: 'pointer',
-                    borderColor: isSelected ? 'var(--accent-blue)' : 'var(--border-light)',
-                    backgroundColor: isSelected ? 'var(--accent-blue-subtle)' : '#FFFFFF',
-                    boxShadow: isSelected ? '0 0 0 1px var(--accent-blue)' : 'var(--shadow-xs)',
+                    borderColor: isSelected ? 'var(--accent-violet)' : 'var(--border-card)',
+                    backgroundColor: isSelected ? 'var(--soft-violet-subtle)' : '#FFFFFF',
+                    boxShadow: isSelected ? 'var(--shadow-sm)' : 'var(--shadow-xs)',
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.45rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                      <FileText size={17} color={isSuperseded ? '#D13438' : '#0066FF'} />
-                      <span style={{ fontSize: '0.94rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+                      <FileText size={17} color={isSuperseded ? '#C94C59' : '#723ECF'} />
+                      <span style={{ fontSize: '0.94rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
                         {doc.title || doc.id}
                       </span>
                     </div>
@@ -268,14 +272,14 @@ export function KnowledgeBase() {
               {/* Document Header */}
               <div style={{ borderBottom: '1px solid var(--border-light)', paddingBottom: '1.25rem', marginBottom: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                  <span className="badge badge-blue">{activeDoc.category || 'Policy'}</span>
+                  <span className="badge badge-violet">{activeDoc.category || 'Policy'}</span>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.76rem', color: 'var(--muted-text)' }}>
                     <Clock size={13} />
                     <span>Effective: {activeDoc.effective_date || 'Current'}</span>
                   </div>
                 </div>
 
-                <h2 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+                <h2 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
                   {activeDoc.title || activeDoc.id}
                 </h2>
                 <div style={{ fontSize: '0.78rem', fontFamily: 'var(--font-mono)', color: 'var(--muted-text)', marginTop: '0.35rem' }}>
@@ -290,7 +294,7 @@ export function KnowledgeBase() {
                     padding: '0.85rem 1rem',
                     borderRadius: 'var(--radius-sm)',
                     backgroundColor: 'var(--error-subtle)',
-                    border: '1px solid rgba(209, 52, 56, 0.25)',
+                    border: '1px solid var(--error-border)',
                     color: 'var(--error)',
                     fontSize: '0.82rem',
                     marginBottom: '1.25rem',
@@ -308,7 +312,7 @@ export function KnowledgeBase() {
 
               {/* Sections & Chunks View */}
               <div style={{ marginBottom: '1.5rem' }}>
-                <h3 style={{ fontSize: '0.96rem', fontWeight: 800, color: 'var(--corp-navy)', marginBottom: '0.65rem' }}>
+                <h3 style={{ fontSize: '0.96rem', fontWeight: 800, color: 'var(--primary-indigo)', marginBottom: '0.65rem' }}>
                   Indexed Policy Sections
                 </h3>
 
@@ -320,15 +324,15 @@ export function KnowledgeBase() {
                         style={{
                           padding: '0.85rem 1rem',
                           borderRadius: 'var(--radius-sm)',
-                          backgroundColor: 'var(--bg-neutral)',
-                          border: '1px solid var(--border-light)',
+                          backgroundColor: 'var(--light-bg)',
+                          border: '1px solid var(--border-card)',
                         }}
                       >
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
-                          <span style={{ fontSize: '0.84rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+                          <span style={{ fontSize: '0.84rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
                             {sec.title || `Section ${idx + 1}`}
                           </span>
-                          <span style={{ fontSize: '0.72rem', fontFamily: 'var(--font-mono)', color: 'var(--accent-blue)', fontWeight: 700 }}>
+                          <span style={{ fontSize: '0.72rem', fontFamily: 'var(--font-mono)', color: 'var(--accent-violet)', fontWeight: 700 }}>
                             {sec.section_id || `SEC-${idx + 1}`}
                           </span>
                         </div>
@@ -342,7 +346,7 @@ export function KnowledgeBase() {
                   <div
                     style={{
                       padding: '1.15rem',
-                      backgroundColor: 'var(--bg-neutral)',
+                      backgroundColor: 'var(--light-bg)',
                       borderRadius: 'var(--radius-sm)',
                       fontSize: '0.84rem',
                       color: 'var(--body-text)',
