@@ -3,8 +3,6 @@ import {
   Mic,
   MicOff,
   Play,
-  Pause,
-  RotateCcw,
   Volume2,
   Globe,
   Radio,
@@ -16,6 +14,7 @@ import {
   Clock,
   Send,
   Layers,
+  Activity,
 } from 'lucide-react';
 import { api } from '../services/api';
 import { WaveformVisualizer } from '../components/WaveformVisualizer';
@@ -52,7 +51,6 @@ export function VoiceStudio() {
   const audioChunksRef = useRef([]);
   const audioPlayerRef = useRef(null);
 
-  // Probe backend Gnani setup
   useEffect(() => {
     const checkVoiceHealth = async () => {
       try {
@@ -65,7 +63,6 @@ export function VoiceStudio() {
     checkVoiceHealth();
   }, []);
 
-  // Timer effect during recording
   useEffect(() => {
     if (isRecording) {
       setRecordDuration(0);
@@ -141,7 +138,6 @@ export function VoiceStudio() {
       setCurrentResult(response);
       setSessionTurns((prev) => [response, ...prev]);
 
-      // If audio URL is returned, autoplay or prepare
       if (response.audio_url && audioPlayerRef.current) {
         audioPlayerRef.current.src = response.audio_url;
         audioPlayerRef.current.play().catch(() => {});
@@ -171,43 +167,43 @@ export function VoiceStudio() {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'flex-start',
-          marginBottom: '1.75rem',
+          marginBottom: '2rem',
           flexWrap: 'wrap',
           gap: '1rem',
         }}
       >
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
-            <span className="badge badge-violet">
-              <Radio size={12} /> Gnani.ai Official Pipeline
-            </span>
-            <span className={`badge ${isGnaniConfigured ? 'badge-success' : 'badge-warning'}`}>
-              {isGnaniConfigured ? 'Gnani STT & TTS Online' : 'GNANI_API_KEY Required'}
-            </span>
+          <div className="eyebrow" style={{ marginBottom: '0.45rem' }}>
+            <Radio size={13} />
+            <span>Multilingual Voice Operations • Official Gnani.ai SDK</span>
           </div>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
+          <h1 style={{ fontSize: '2.15rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
             Voice Studio
           </h1>
-          <p style={{ color: 'var(--muted-text)', fontSize: '0.94rem' }}>
-            Multilingual customer voice support powered exclusively by Gnani STT & TTS clients.
+          <p style={{ color: 'var(--muted-text)', fontSize: '0.96rem', maxWidth: '700px' }}>
+            Enterprise speech pipeline powered exclusively by Gnani STT and TTS clients across 10 Indian languages.
           </p>
         </div>
 
         {/* 10 Indian Languages Selector */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-          <Globe size={18} color="#723ECF" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--corp-navy)', fontSize: '0.84rem', fontWeight: 700 }}>
+            <Globe size={18} color="#0066FF" />
+            <span>Acoustic Language:</span>
+          </div>
           <select
             value={selectedLang}
             onChange={(e) => setSelectedLang(e.target.value)}
             style={{
-              padding: '0.55rem 0.95rem',
+              padding: '0.6rem 1rem',
               borderRadius: 'var(--radius-sm)',
               border: '1px solid var(--border-medium)',
               backgroundColor: '#FFFFFF',
-              fontWeight: 600,
+              fontWeight: 700,
               fontSize: '0.88rem',
-              color: 'var(--primary-indigo)',
+              color: 'var(--corp-navy)',
               cursor: 'pointer',
+              boxShadow: 'var(--shadow-xs)',
             }}
           >
             {SUPPORTED_LANGUAGES.map((l) => (
@@ -219,42 +215,42 @@ export function VoiceStudio() {
         </div>
       </div>
 
-      {/* API Key Missing Notification State */}
+      {/* API Key Missing State */}
       {!isGnaniConfigured && (
         <div
           className="zm-card"
           style={{
-            padding: '1.25rem 1.5rem',
-            backgroundColor: '#FCF5E8',
-            border: '1px solid rgba(214, 154, 53, 0.35)',
-            marginBottom: '1.75rem',
+            padding: '1.5rem',
+            backgroundColor: '#FEF3D6',
+            border: '1px solid rgba(180, 83, 9, 0.3)',
+            marginBottom: '2rem',
             display: 'flex',
             alignItems: 'flex-start',
-            gap: '1rem',
+            gap: '1.25rem',
           }}
         >
           <div
             style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '8px',
+              width: '40px',
+              height: '40px',
+              borderRadius: '6px',
               backgroundColor: '#FFFFFF',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#D69A35',
+              color: '#B45309',
               flexShrink: 0,
-              border: '1px solid rgba(214, 154, 53, 0.3)',
+              border: '1px solid rgba(180, 83, 9, 0.25)',
             }}
           >
-            <Key size={18} />
+            <Key size={20} />
           </div>
           <div style={{ flex: 1 }}>
-            <h3 style={{ fontSize: '0.96rem', fontWeight: 700, color: '#875C0B', marginBottom: '0.2rem' }}>
+            <h3 style={{ fontSize: '1.02rem', fontWeight: 800, color: '#78350F', marginBottom: '0.25rem' }}>
               Gnani.ai Official SDK Integration Ready
             </h3>
-            <p style={{ fontSize: '0.82rem', color: '#664708', lineHeight: 1.5 }}>
-              The official <code>gnani-vachana</code> Python client is installed with STT (<code>GnaniSTTClient</code>) and TTS (<code>GnaniTTSClient</code>, <code>timbre-v2.5</code>). To process live audio requests with the Gnani cloud service, add your <code>GNANI_API_KEY</code> in the <strong>Settings</strong> page or in your local <code>.env</code> file. In accordance with platform guidelines, fake voice responses are never simulated.
+            <p style={{ fontSize: '0.84rem', color: '#92400E', lineHeight: 1.55 }}>
+              The official <code>gnani-vachana</code> Python client is installed with STT (<code>GnaniSTTClient</code>) and TTS (<code>GnaniTTSClient</code>, <code>timbre-v2.5</code>). Configure your <code>GNANI_API_KEY</code> in <strong>Settings</strong> or <code>.env</code> to stream speech audio. In accordance with platform guidelines, simulated voice responses are prohibited.
             </p>
           </div>
         </div>
@@ -264,16 +260,16 @@ export function VoiceStudio() {
       {voiceError && (
         <div
           style={{
-            padding: '0.75rem 1.25rem',
+            padding: '0.85rem 1.25rem',
             backgroundColor: 'var(--error-subtle)',
             borderRadius: 'var(--radius-sm)',
-            border: '1px solid rgba(201, 76, 89, 0.25)',
+            border: '1px solid rgba(209, 52, 56, 0.25)',
             color: 'var(--error)',
-            fontSize: '0.84rem',
+            fontSize: '0.86rem',
             display: 'flex',
             alignItems: 'center',
             gap: '0.65rem',
-            marginBottom: '1.5rem',
+            marginBottom: '1.75rem',
           }}
         >
           <AlertCircle size={16} />
@@ -281,123 +277,141 @@ export function VoiceStudio() {
         </div>
       )}
 
-      {/* Main Studio Console */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.75rem', marginBottom: '2rem' }}>
-        {/* Left: Recording & Synthesis Console */}
-        <div className="zm-card-dark" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '380px' }}>
-          <div style={{ fontSize: '0.78rem', color: 'rgba(237, 231, 250, 0.65)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '1rem', fontWeight: 600 }}>
-            {isRecording ? 'Capturing Audio Input...' : 'Voice Interaction Console'}
+      {/* Main Voice Console */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '2rem', marginBottom: '2.25rem' }}>
+        {/* Left: Deep Navy Acoustic Control Chamber */}
+        <div
+          className="zm-card-navy"
+          style={{
+            padding: '2.5rem 2rem',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '420px',
+            position: 'relative',
+          }}
+        >
+          <div
+            style={{
+              fontSize: '0.74rem',
+              color: 'rgba(255, 255, 255, 0.65)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              marginBottom: '1.25rem',
+              fontWeight: 700,
+            }}
+          >
+            {isRecording ? 'Capturing Acoustic Input...' : 'Acoustic Control Chamber'}
           </div>
 
           {/* Recording Timer */}
           <div
             style={{
-              fontSize: '2.5rem',
+              fontSize: '2.8rem',
               fontWeight: 800,
               fontFamily: 'var(--font-mono)',
               color: isRecording ? '#FF6B74' : '#FFFFFF',
-              marginBottom: '1rem',
+              marginBottom: '1.25rem',
+              letterSpacing: '-0.02em',
             }}
           >
             {formatTimer(recordDuration)}
           </div>
 
-          {/* Live Waveform Visualization */}
-          <div style={{ width: '100%', maxWidth: '340px', marginBottom: '1.5rem' }}>
-            <WaveformVisualizer isRecording={isRecording} isPlaying={isPlayingResponse} height={52} />
+          {/* Waveform Visualization */}
+          <div style={{ width: '100%', maxWidth: '380px', marginBottom: '1.75rem' }}>
+            <WaveformVisualizer isRecording={isRecording} isPlaying={isPlayingResponse} height={54} />
           </div>
 
           {/* Big Record Control Button */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '1.75rem' }}>
             {!isRecording ? (
               <button
                 onClick={startRecording}
                 disabled={isProcessing}
                 style={{
-                  width: '64px',
-                  height: '64px',
+                  width: '68px',
+                  height: '68px',
                   borderRadius: '50%',
-                  backgroundColor: '#723ECF',
+                  backgroundColor: 'var(--accent-blue)',
                   color: '#FFFFFF',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  boxShadow: '0 8px 24px rgba(114, 62, 207, 0.5)',
+                  boxShadow: '0 8px 25px rgba(0, 102, 255, 0.45)',
                   transition: 'transform 0.15s ease',
                 }}
                 title="Start Recording Speech"
-                onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.94)')}
+                onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.95)')}
                 onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
               >
-                <Mic size={28} />
+                <Mic size={30} />
               </button>
             ) : (
               <button
                 onClick={stopRecording}
                 style={{
-                  width: '64px',
-                  height: '64px',
+                  width: '68px',
+                  height: '68px',
                   borderRadius: '50%',
-                  backgroundColor: '#C94C59',
+                  backgroundColor: 'var(--error)',
                   color: '#FFFFFF',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  boxShadow: '0 8px 24px rgba(201, 76, 89, 0.5)',
+                  boxShadow: '0 8px 25px rgba(209, 52, 56, 0.5)',
                   animation: 'pulse-recording 1.2s infinite ease-in-out',
                 }}
                 title="Stop Recording"
               >
-                <MicOff size={28} />
+                <MicOff size={30} />
               </button>
             )}
 
-            {/* If audio blob ready, process button */}
             {audioBlob && !isRecording && (
               <button
                 onClick={() => handleProcessVoice()}
                 disabled={isProcessing}
-                className="btn-primary"
-                style={{
-                  backgroundColor: '#21865B',
-                  boxShadow: '0 4px 14px rgba(33, 134, 91, 0.4)',
-                }}
+                className="btn-blue"
+                style={{ padding: '0.65rem 1.35rem' }}
               >
                 {isProcessing ? 'Processing via Gnani...' : 'Run Pipeline'}
               </button>
             )}
           </div>
 
-          {/* Workflow Status Pill */}
+          {/* Workflow Sequence */}
           <div
             style={{
               fontSize: '0.74rem',
-              color: 'rgba(237, 231, 250, 0.75)',
+              color: 'rgba(255, 255, 255, 0.7)',
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
+              fontWeight: 600,
             }}
           >
             <span>Customer Speaks</span>
             <span>→</span>
-            <span>Gnani STT</span>
+            <span style={{ color: '#0066FF' }}>Gnani STT</span>
             <span>→</span>
             <span>LLM + RAG</span>
             <span>→</span>
-            <span>Gnani TTS</span>
+            <span style={{ color: '#0066FF' }}>Gnani TTS</span>
           </div>
 
-          {/* Direct Speech Synthesis Text Sandbox (allows testing multilingual TTS directly) */}
+          {/* Direct Input Field */}
           <div
             style={{
               width: '100%',
-              maxWidth: '440px',
-              marginTop: '1.75rem',
-              paddingTop: '1.25rem',
-              borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+              maxWidth: '460px',
+              marginTop: '2rem',
+              paddingTop: '1.5rem',
+              borderTop: '1px solid rgba(255, 255, 255, 0.12)',
             }}
           >
-            <div style={{ fontSize: '0.72rem', color: 'rgba(237, 231, 250, 0.6)', marginBottom: '0.45rem' }}>
+            <div style={{ fontSize: '0.72rem', color: 'rgba(255, 255, 255, 0.65)', marginBottom: '0.5rem', fontWeight: 600 }}>
               Or type customer query for direct pipeline execution:
             </div>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -408,12 +422,12 @@ export function VoiceStudio() {
                 placeholder="e.g. क्या मैं 10 दिन बाद सामान वापस कर सकता हूँ?"
                 style={{
                   flex: 1,
-                  padding: '0.45rem 0.75rem',
+                  padding: '0.5rem 0.85rem',
                   borderRadius: 'var(--radius-sm)',
-                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                  border: '1px solid rgba(255, 255, 255, 0.18)',
                   backgroundColor: 'rgba(255, 255, 255, 0.08)',
                   color: '#FFFFFF',
-                  fontSize: '0.84rem',
+                  fontSize: '0.86rem',
                 }}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') handleProcessVoice(null, manualQuery);
@@ -422,42 +436,46 @@ export function VoiceStudio() {
               <button
                 onClick={() => handleProcessVoice(null, manualQuery)}
                 disabled={isProcessing || !manualQuery.trim()}
-                className="btn-primary"
-                style={{ padding: '0.45rem 0.85rem', fontSize: '0.8rem' }}
+                className="btn-blue"
+                style={{ padding: '0.5rem 0.95rem', fontSize: '0.82rem' }}
               >
-                <Send size={13} />
+                <Send size={14} />
               </button>
             </div>
           </div>
         </div>
 
-        {/* Right: Transcription & AI Spoken Response Preview */}
-        <div className="zm-card" style={{ padding: '1.75rem', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
-            <h2 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--primary-indigo)' }}>
-              Live Interaction Preview
-            </h2>
+        {/* Right: Transcription & AI Spoken Output Preview */}
+        <div className="zm-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <div>
+              <div className="eyebrow" style={{ marginBottom: '0.2rem' }}>Pipeline Telemetry</div>
+              <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+                Live Interaction Preview
+              </h2>
+            </div>
             {currentResult && (
               <span className="badge badge-success">Completed</span>
             )}
           </div>
 
           {currentResult ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', flex: 1 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.35rem', flex: 1 }}>
               {/* STT Transcript */}
               <div>
-                <div style={{ fontSize: '0.74rem', fontWeight: 700, color: 'var(--muted-text)', textTransform: 'uppercase', marginBottom: '0.35rem' }}>
+                <div style={{ fontSize: '0.74rem', fontWeight: 700, color: 'var(--muted-text)', textTransform: 'uppercase', marginBottom: '0.4rem', letterSpacing: '0.04em' }}>
                   Speech-to-Text Transcript (Gnani STT)
                 </div>
                 <div
                   style={{
-                    padding: '0.75rem 1rem',
+                    padding: '0.85rem 1.15rem',
                     borderRadius: 'var(--radius-sm)',
-                    backgroundColor: 'var(--light-bg)',
+                    backgroundColor: 'var(--bg-slate)',
                     border: '1px solid var(--border-light)',
-                    fontSize: '0.88rem',
-                    color: 'var(--body-text)',
+                    fontSize: '0.92rem',
+                    color: 'var(--corp-navy)',
                     fontFamily: selectedLang === 'hi' ? 'var(--font-indic)' : 'var(--font-body)',
+                    fontWeight: 600,
                   }}
                 >
                   "{currentResult.transcript || 'Speech transcription...'}"
@@ -466,18 +484,18 @@ export function VoiceStudio() {
 
               {/* AI Grounded Response */}
               <div>
-                <div style={{ fontSize: '0.74rem', fontWeight: 700, color: 'var(--muted-text)', textTransform: 'uppercase', marginBottom: '0.35rem' }}>
-                  AI Grounded Response
+                <div style={{ fontSize: '0.74rem', fontWeight: 700, color: 'var(--muted-text)', textTransform: 'uppercase', marginBottom: '0.4rem', letterSpacing: '0.04em' }}>
+                  Grounded Enterprise Response
                 </div>
                 <div
                   style={{
-                    padding: '0.85rem 1rem',
+                    padding: '1rem 1.15rem',
                     borderRadius: 'var(--radius-sm)',
-                    backgroundColor: 'var(--soft-violet-subtle)',
-                    border: '1px solid rgba(114, 62, 207, 0.15)',
-                    fontSize: '0.9rem',
-                    color: 'var(--primary-indigo)',
-                    lineHeight: 1.55,
+                    backgroundColor: 'var(--accent-blue-subtle)',
+                    border: '1px solid rgba(0, 102, 255, 0.2)',
+                    fontSize: '0.92rem',
+                    color: 'var(--corp-navy)',
+                    lineHeight: 1.6,
                     fontFamily: selectedLang === 'hi' ? 'var(--font-indic)' : 'var(--font-body)',
                   }}
                 >
@@ -485,7 +503,7 @@ export function VoiceStudio() {
                 </div>
               </div>
 
-              {/* RAG Evidence cited if present */}
+              {/* RAG Evidence cited */}
               {currentResult.sources && currentResult.sources.length > 0 && (
                 <EvidenceDrawer sources={currentResult.sources} />
               )}
@@ -494,21 +512,21 @@ export function VoiceStudio() {
               <div
                 style={{
                   marginTop: 'auto',
-                  padding: '1rem',
+                  padding: '1.15rem',
                   borderRadius: 'var(--radius-sm)',
                   backgroundColor: '#FFFFFF',
                   border: '1px solid var(--border-light)',
                   boxShadow: 'var(--shadow-xs)',
                 }}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.65rem' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <Volume2 size={16} color="#723ECF" />
-                    <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--primary-indigo)' }}>
-                      Gnani TTS Spoken Output
+                    <Volume2 size={16} color="#0066FF" />
+                    <span style={{ fontSize: '0.84rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+                      Gnani TTS Spoken Synthesis
                     </span>
                   </div>
-                  <span style={{ fontSize: '0.7rem', color: 'var(--muted-text)' }}>
+                  <span style={{ fontSize: '0.72rem', color: 'var(--muted-text)', fontFamily: 'var(--font-mono)' }}>
                     Model: timbre-v2.5
                   </span>
                 </div>
@@ -524,47 +542,49 @@ export function VoiceStudio() {
               </div>
             </div>
           ) : (
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '2rem' }}>
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '2.5rem' }}>
               <div
                 style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '50%',
-                  backgroundColor: 'var(--soft-violet)',
-                  color: 'var(--primary-accent)',
+                  width: '52px',
+                  height: '52px',
+                  borderRadius: '8px',
+                  backgroundColor: 'var(--accent-blue-subtle)',
+                  color: 'var(--accent-blue)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   marginBottom: '1rem',
+                  border: '1px solid rgba(0, 102, 255, 0.2)',
                 }}
               >
-                <Mic size={22} />
+                <Mic size={24} />
               </div>
-              <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--primary-indigo)', marginBottom: '0.35rem' }}>
-                Awaiting Voice Interaction
+              <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--corp-navy)', marginBottom: '0.4rem' }}>
+                Awaiting Acoustic Capture
               </h3>
-              <p style={{ fontSize: '0.82rem', color: 'var(--muted-text)', maxWidth: '320px', lineHeight: 1.45 }}>
-                Click the microphone button to speak in any of the 10 supported Indian languages or type a sample inquiry.
+              <p style={{ fontSize: '0.84rem', color: 'var(--muted-text)', maxWidth: '340px', lineHeight: 1.55 }}>
+                Record speech in any of the 10 supported Indian languages or enter an inquiry to test the Gnani cloud pipeline.
               </p>
             </div>
           )}
         </div>
       </div>
 
-      {/* Conversation Turn History */}
+      {/* Turn History */}
       {sessionTurns.length > 0 && (
-        <div className="zm-card" style={{ padding: '1.5rem' }}>
-          <h2 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--primary-indigo)', marginBottom: '1rem' }}>
-            Voice Studio Interaction History
+        <div className="zm-card" style={{ padding: '1.75rem' }}>
+          <div className="eyebrow" style={{ marginBottom: '0.25rem' }}>Session Audit</div>
+          <h2 style={{ fontSize: '1.18rem', fontWeight: 800, color: 'var(--corp-navy)', marginBottom: '1.25rem' }}>
+            Voice Studio Turn History
           </h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
             {sessionTurns.map((turn, idx) => (
               <div
                 key={idx}
                 style={{
-                  padding: '0.85rem 1rem',
+                  padding: '1rem 1.15rem',
                   borderRadius: 'var(--radius-sm)',
-                  backgroundColor: 'var(--light-bg)',
+                  backgroundColor: 'var(--bg-neutral)',
                   border: '1px solid var(--border-light)',
                   display: 'flex',
                   justifyContent: 'space-between',
@@ -572,13 +592,13 @@ export function VoiceStudio() {
                 }}
               >
                 <div style={{ flex: 1 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
-                    <span className="badge badge-violet">{turn.language?.toUpperCase() || 'HI'}</span>
-                    <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--primary-indigo)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
+                    <span className="badge badge-blue">{turn.language?.toUpperCase() || 'HI'}</span>
+                    <span style={{ fontSize: '0.86rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
                       "{turn.transcript || 'Speech input'}"
                     </span>
                   </div>
-                  <div style={{ fontSize: '0.82rem', color: 'var(--body-text)', lineHeight: 1.4 }}>
+                  <div style={{ fontSize: '0.84rem', color: 'var(--body-text)', lineHeight: 1.5 }}>
                     {turn.response_text}
                   </div>
                 </div>
@@ -591,7 +611,7 @@ export function VoiceStudio() {
                       }
                     }}
                     className="btn-secondary"
-                    style={{ fontSize: '0.75rem', padding: '4px 8px', marginLeft: '1rem' }}
+                    style={{ fontSize: '0.78rem', padding: '5px 10px', marginLeft: '1.25rem' }}
                   >
                     <Play size={12} />
                     <span>Replay</span>
