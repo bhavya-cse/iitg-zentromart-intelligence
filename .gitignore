@@ -1,0 +1,31 @@
+# Environment variables and secrets
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Python cache and test files
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
+# macOS
+.DS_Store
+
+# Frontend dependencies and builds
+node_modules/
+dist/
+build/
+
+# Dataset files (download separately from organisers)
+Capstone_Project_Dataset_FTTT_2026/
+Capstone_Project_Dataset_FTTT_2026.zip

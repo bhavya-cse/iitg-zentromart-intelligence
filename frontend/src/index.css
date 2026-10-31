@@ -1,0 +1,319 @@
+/* ==========================================================================
+   ZentroMart Intelligence — Enterprise Design System
+   Design Reference: Pratyora Visual Identity
+   Palette:
+     Primary Indigo:    #17143F
+     Secondary Indigo:  #29245B
+     Deep Background:   #100E2D
+     Light Background:  #F7F6FB
+     White:             #FFFFFF
+     Primary Accent:    #723ECF
+     Soft Violet:       #EDE7FA
+     Success:           #21865B
+     Warning:           #D69A35
+     Error:             #C94C59
+     Body Text:         #29283A
+     Muted Text:        #77758A
+   ========================================================================== */
+
+:root {
+  --primary-indigo: #17143F;
+  --secondary-indigo: #29245B;
+  --deep-bg: #100E2D;
+  --light-bg: #F7F6FB;
+  --surface-white: #FFFFFF;
+  --primary-accent: #723ECF;
+  --primary-accent-hover: #5F30B2;
+  --soft-violet: #EDE7FA;
+  --soft-violet-subtle: #F6F3FC;
+  --success: #21865B;
+  --success-subtle: #E8F5EE;
+  --warning: #D69A35;
+  --warning-subtle: #FCF5E8;
+  --error: #C94C59;
+  --error-subtle: #FAEAEC;
+  --body-text: #29283A;
+  --muted-text: #77758A;
+  --border-light: #E4E1EE;
+  --border-medium: #CDC8DE;
+  --border-indigo: rgba(255, 255, 255, 0.12);
+
+  --font-heading: 'Bricolage Grotesque', -apple-system, sans-serif;
+  --font-body: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-indic: 'Tiro Devanagari Hindi', 'Tiro Devanagari Sanskrit', serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --shadow-xs: 0 1px 2px rgba(23, 20, 63, 0.04);
+  --shadow-sm: 0 2px 6px rgba(23, 20, 63, 0.06);
+  --shadow-md: 0 8px 24px rgba(23, 20, 63, 0.08);
+  --shadow-lg: 0 16px 36px rgba(23, 20, 63, 0.12);
+  --shadow-indigo: 0 12px 32px rgba(16, 14, 45, 0.35);
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-full: 9999px;
+
+  --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--body-text);
+  background-color: var(--light-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.015em;
+  color: var(--primary-indigo);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+h1 { font-size: 1.85rem; font-weight: 800; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.15rem; }
+h4 { font-size: 1.0rem; }
+
+p {
+  color: var(--body-text);
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  background: none;
+  transition: all var(--transition-fast);
+}
+
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2px solid var(--primary-accent);
+  outline-offset: 2px;
+}
+
+input, textarea, select {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--body-text);
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-medium);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-text);
+}
+
+/* Indian typography helper */
+.font-indic {
+  font-family: var(--font-indic);
+}
+
+/* Common Layout Components */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow-y: auto;
+  height: 100vh;
+  background: var(--light-bg);
+}
+
+.page-body {
+  padding: 2rem 2.5rem;
+  flex: 1;
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Card primitives */
+.zm-card {
+  background: var(--surface-white);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+  transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+.zm-card:hover {
+  border-color: var(--border-medium);
+  box-shadow: var(--shadow-sm);
+}
+
+.zm-card-dark {
+  background: var(--primary-indigo);
+  border: 1px solid var(--border-indigo);
+  border-radius: var(--radius-md);
+  color: #FFFFFF;
+}
+
+/* Status badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.01em;
+}
+
+.badge-success {
+  background: var(--success-subtle);
+  color: var(--success);
+  border: 1px solid rgba(33, 134, 91, 0.2);
+}
+
+.badge-warning {
+  background: var(--warning-subtle);
+  color: var(--warning);
+  border: 1px solid rgba(214, 154, 53, 0.25);
+}
+
+.badge-error {
+  background: var(--error-subtle);
+  color: var(--error);
+  border: 1px solid rgba(201, 76, 89, 0.25);
+}
+
+.badge-violet {
+  background: var(--soft-violet);
+  color: var(--primary-accent);
+  border: 1px solid rgba(114, 62, 207, 0.2);
+}
+
+.badge-muted {
+  background: #EFEFF4;
+  color: var(--muted-text);
+  border: 1px solid #DFDFE6;
+}
+
+/* Buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--primary-accent);
+  color: #FFFFFF;
+  padding: 0.55rem 1.15rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 8px rgba(114, 62, 207, 0.25);
+}
+
+.btn-primary:hover {
+  background: var(--primary-accent-hover);
+  box-shadow: 0 4px 12px rgba(114, 62, 207, 0.35);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--surface-white);
+  color: var(--body-text);
+  border: 1px solid var(--border-medium);
+  padding: 0.55rem 1.15rem;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.btn-secondary:hover {
+  background: var(--light-bg);
+  border-color: var(--primary-indigo);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  color: var(--muted-text);
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  font-size: 0.88rem;
+}
+
+.btn-ghost:hover {
+  color: var(--primary-indigo);
+  background: var(--soft-violet-subtle);
+}
+
+/* Pulsing indicators */
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.pulse-dot.online {
+  background: #21865B;
+  box-shadow: 0 0 0 rgba(33, 134, 91, 0.4);
+  animation: pulse-green 2s infinite;
+}
+
+.pulse-dot.warning {
+  background: #D69A35;
+}
+
+.pulse-dot.offline {
+  background: #C94C59;
+}
+
+@keyframes pulse-green {
+  0% { box-shadow: 0 0 0 0 rgba(33, 134, 91, 0.6); }
+  70% { box-shadow: 0 0 0 7px rgba(33, 134, 91, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(33, 134, 91, 0); }
+}
+
+@keyframes pulse-recording {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
