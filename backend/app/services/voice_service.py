@@ -105,7 +105,7 @@ class VoiceService:
                 text=text,
                 voice=voice,
                 model=self.model,
-                language=lang,
+                language=LANG_CODE_MAP.get(lang, "hi-IN"),
             )
 
             file_id = f"speech_{uuid.uuid4().hex[:12]}.wav"

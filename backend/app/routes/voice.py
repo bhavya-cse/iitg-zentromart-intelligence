@@ -15,10 +15,30 @@ async def process_voice_turn(
     language: str = Form("hi"),
     session_id: Optional[str] = Form(None),
 ):
+    # Normalize language codes to the short codes expected by VoiceService.
+    language_input = language.strip().lower()
+
+    if language_input == "auto":
+        language = "auto"
+    else:
+        language = next(
+            (
+                short_code
+                for short_code, regional_code in LANG_CODE_MAP.items()
+                if language_input in (short_code, regional_code.lower())
+            ),
+            None,
+        )
+
+        if language is None:
+            raise HTTPException(
+                status_code=400,
+                detail="Unsupported language. Choose from: auto, "
+                       + ", ".join(LANG_CODE_MAP.keys()),
+            )
     audio_bytes = None
     if audio:
         audio_bytes = await audio.read()
-
     try:
         res = await voice_service.run_voice_pipeline(
             audio_bytes=audio_bytes,
