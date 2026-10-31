@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-export function WaveformVisualizer({ isRecording = false, isPlaying = false, height = 48 }) {
+export function WaveformVisualizer({ isRecording = false, isPlaying = false, height = 50 }) {
   const canvasRef = useRef(null);
   const animFrameId = useRef(null);
 
@@ -8,7 +8,7 @@ export function WaveformVisualizer({ isRecording = false, isPlaying = false, hei
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    const numBars = 36;
+    const numBars = 40;
     let phase = 0;
 
     const render = () => {
@@ -23,34 +23,34 @@ export function WaveformVisualizer({ isRecording = false, isPlaying = false, hei
         let barHeight = 6;
 
         if (isRecording) {
-          // Dynamic active waveform during recording
-          const sinVal = Math.sin(phase + i * 0.35) * Math.cos(phase * 0.7 + i * 0.2);
-          const noise = Math.random() * 0.25;
-          barHeight = Math.max(6, Math.min(h - 4, (Math.abs(sinVal) + noise) * (h * 0.85)));
+          // Dynamic live acoustic capture waveform
+          const sinVal = Math.sin(phase + i * 0.32) * Math.cos(phase * 0.75 + i * 0.18);
+          const noise = Math.random() * 0.3;
+          barHeight = Math.max(6, Math.min(h - 4, (Math.abs(sinVal) + noise) * (h * 0.9)));
         } else if (isPlaying) {
-          // Rhythmic waveform during audio playback
-          const waveVal = Math.sin(phase * 1.5 + i * 0.45);
-          barHeight = Math.max(6, Math.min(h - 6, Math.abs(waveVal) * (h * 0.75)));
+          // Rhythmic waveform during Gnani audio playback
+          const waveVal = Math.sin(phase * 1.6 + i * 0.42);
+          barHeight = Math.max(6, Math.min(h - 6, Math.abs(waveVal) * (h * 0.8)));
         } else {
-          // Resting gentle ambient state
-          barHeight = 4 + Math.sin(i * 0.3) * 2;
+          // Resting clean enterprise ambient state
+          barHeight = 5 + Math.sin(i * 0.28) * 3;
         }
 
         const x = i * (barWidth + gap);
         const y = (h - barHeight) / 2;
 
         ctx.fillStyle = isRecording
-          ? '#C94C59' // Recording red
+          ? '#D13438' // Recording Crimson Alert
           : isPlaying
-          ? '#9D68FF' // Playback purple
-          : 'rgba(237, 231, 250, 0.25)'; // Idle
+          ? '#0066FF' // Enterprise Electric Blue
+          : 'rgba(255, 255, 255, 0.35)'; // Crisp subtle acoustic chamber idle
 
         ctx.beginPath();
         ctx.roundRect(x, y, barWidth, barHeight, [2, 2, 2, 2]);
         ctx.fill();
       }
 
-      phase += 0.12;
+      phase += 0.13;
       animFrameId.current = requestAnimationFrame(render);
     };
 
@@ -66,12 +66,12 @@ export function WaveformVisualizer({ isRecording = false, isPlaying = false, hei
   return (
     <canvas
       ref={canvasRef}
-      width={320}
+      width={360}
       height={height}
       style={{
         display: 'block',
         width: '100%',
-        maxWidth: '360px',
+        maxWidth: '380px',
         height: `${height}px`,
       }}
     />
