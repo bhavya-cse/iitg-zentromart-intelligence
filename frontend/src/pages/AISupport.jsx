@@ -16,6 +16,8 @@ import {
   CheckCircle2,
   Lock,
   Unlock,
+  Bot,
+  User,
 } from 'lucide-react';
 import { api } from '../services/api';
 import { EvidenceDrawer } from '../components/EvidenceDrawer';
@@ -161,15 +163,16 @@ export function AISupport({ onNavigateToVoice }) {
     <div
       style={{
         display: 'flex',
-        height: 'calc(100vh - 72px)',
-        backgroundColor: 'var(--bg-neutral)',
+        height: 'calc(100vh - 70px)',
+        backgroundColor: 'var(--light-bg)',
       }}
     >
-      {/* Left Session Drawer / Prompt Catalog */}
+      {/* Left Session Drawer / Prompt Catalog (Linear Style) */}
       <div
+        className="chat-sidebar"
         style={{
-          width: '300px',
-          borderRight: '1px solid var(--border-light)',
+          width: '310px',
+          borderRight: '1px solid var(--border-card)',
           backgroundColor: '#FFFFFF',
           display: 'flex',
           flexDirection: 'column',
@@ -186,9 +189,18 @@ export function AISupport({ onNavigateToVoice }) {
           <span>New Support Session</span>
         </button>
 
-        <div className="eyebrow" style={{ marginBottom: '0.85rem' }}>
+        <span
+          style={{
+            fontSize: '0.68rem',
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+            color: 'var(--subtle-text)',
+            marginBottom: '0.75rem',
+          }}
+        >
           Suggested Inquiries
-        </div>
+        </span>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginBottom: '1.5rem' }}>
           {SAMPLE_QUERIES.map((q, idx) => (
@@ -199,21 +211,24 @@ export function AISupport({ onNavigateToVoice }) {
                 textAlign: 'left',
                 padding: '0.75rem 0.9rem',
                 borderRadius: 'var(--radius-sm)',
-                backgroundColor: 'var(--bg-neutral)',
+                backgroundColor: 'var(--light-bg)',
                 border: '1px solid var(--border-light)',
                 fontSize: '0.82rem',
-                color: 'var(--corp-navy)',
+                color: 'var(--primary-indigo)',
                 lineHeight: 1.4,
                 fontWeight: 600,
-                transition: 'all 140ms ease',
+                cursor: 'pointer',
+                transition: 'all var(--transition-fast)',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = 'var(--accent-blue-subtle)';
-                e.currentTarget.style.borderColor = 'rgba(0, 102, 255, 0.3)';
+                e.currentTarget.style.backgroundColor = 'var(--soft-violet-subtle)';
+                e.currentTarget.style.borderColor = 'rgba(114, 62, 207, 0.3)';
+                e.currentTarget.style.color = 'var(--accent-violet)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'var(--bg-neutral)';
+                e.currentTarget.style.backgroundColor = 'var(--light-bg)';
                 e.currentTarget.style.borderColor = 'var(--border-light)';
+                e.currentTarget.style.color = 'var(--primary-indigo)';
               }}
             >
               {q}
@@ -221,11 +236,19 @@ export function AISupport({ onNavigateToVoice }) {
           ))}
         </div>
 
-        {/* Corporate Precedence Notice */}
-        <div style={{ marginTop: 'auto', borderTop: '1px solid var(--border-light)', paddingTop: '1.25rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.45rem' }}>
-            <Sparkles size={14} color="#0066FF" />
-            <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+        {/* Corporate Precedence Notice Card */}
+        <div
+          style={{
+            marginTop: 'auto',
+            padding: '1rem',
+            borderRadius: 'var(--radius-sm)',
+            backgroundColor: 'var(--soft-violet-subtle)',
+            border: '1px solid rgba(114, 62, 207, 0.2)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
+            <Sparkles size={14} color="#723ECF" />
+            <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
               Policy Precedence Active
             </span>
           </div>
@@ -242,7 +265,7 @@ export function AISupport({ onNavigateToVoice }) {
           style={{
             height: '52px',
             backgroundColor: '#FFFFFF',
-            borderBottom: '1px solid var(--border-light)',
+            borderBottom: '1px solid var(--border-card)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -250,11 +273,14 @@ export function AISupport({ onNavigateToVoice }) {
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-            <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: '#0E703C' }} />
-            <span style={{ fontSize: '0.86rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+            <span
+              className="pulse-indicator"
+              style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: 'var(--success)' }}
+            />
+            <span style={{ fontSize: '0.86rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
               ZentroMart Grounded Assistant
             </span>
-            <span className="badge badge-blue" style={{ fontSize: '0.68rem', padding: '1px 6px' }}>
+            <span className="badge badge-violet" style={{ fontSize: '0.68rem', padding: '1px 6px' }}>
               Multi-Turn RAG v4
             </span>
           </div>
@@ -291,7 +317,7 @@ export function AISupport({ onNavigateToVoice }) {
             style={{
               padding: '0.75rem 2rem',
               backgroundColor: 'var(--error-subtle)',
-              borderBottom: '1px solid rgba(209, 52, 56, 0.2)',
+              borderBottom: '1px solid var(--error-border)',
               color: 'var(--error)',
               fontSize: '0.82rem',
               display: 'flex',
@@ -321,6 +347,7 @@ export function AISupport({ onNavigateToVoice }) {
             return (
               <div
                 key={msg.id}
+                className="animate-slide-up"
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
@@ -330,18 +357,34 @@ export function AISupport({ onNavigateToVoice }) {
                   alignSelf: isUser ? 'flex-end' : 'flex-start',
                 }}
               >
-                {/* Speaker Header */}
+                {/* Speaker Header with Avatar */}
                 <div
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.45rem',
+                    gap: '0.5rem',
                     marginBottom: '0.4rem',
                     fontSize: '0.74rem',
                     color: 'var(--muted-text)',
                   }}
                 >
-                  <span style={{ fontWeight: 700, color: isUser ? 'var(--corp-navy)' : 'var(--accent-blue)' }}>
+                  <div
+                    style={{
+                      width: '20px',
+                      height: '20px',
+                      borderRadius: 'var(--radius-xs)',
+                      background: isUser
+                        ? 'var(--primary-indigo)'
+                        : 'linear-gradient(135deg, #17143F 0%, #723ECF 100%)',
+                      color: '#FFFFFF',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {isUser ? <User size={11} /> : <Bot size={11} />}
+                  </div>
+                  <span style={{ fontWeight: 700, color: isUser ? 'var(--primary-indigo)' : 'var(--accent-violet)' }}>
                     {isUser ? 'Customer' : 'ZentroMart Assistant'}
                   </span>
                   <span>•</span>
@@ -351,12 +394,12 @@ export function AISupport({ onNavigateToVoice }) {
                 {/* Bubble Container */}
                 <div
                   style={{
-                    backgroundColor: isUser ? 'var(--corp-navy)' : '#FFFFFF',
+                    backgroundColor: isUser ? 'var(--primary-indigo)' : '#FFFFFF',
                     color: isUser ? '#FFFFFF' : 'var(--body-text)',
                     padding: '1.15rem 1.35rem',
-                    borderRadius: isUser ? '8px 8px 1px 8px' : '8px 8px 8px 1px',
-                    border: isUser ? 'none' : '1px solid var(--border-light)',
-                    boxShadow: isUser ? '0 4px 14px rgba(0, 18, 46, 0.15)' : 'var(--shadow-xs)',
+                    borderRadius: isUser ? '10px 10px 2px 10px' : '10px 10px 10px 2px',
+                    border: isUser ? 'none' : '1px solid var(--border-card)',
+                    boxShadow: isUser ? 'var(--shadow-md)' : 'var(--shadow-xs)',
                     fontSize: '0.94rem',
                     lineHeight: 1.65,
                     maxWidth: '100%',
@@ -372,7 +415,7 @@ export function AISupport({ onNavigateToVoice }) {
                         marginTop: '1rem',
                         padding: '0.85rem 1rem',
                         borderRadius: 'var(--radius-sm)',
-                        backgroundColor: 'var(--bg-slate)',
+                        backgroundColor: 'var(--surface-subtle)',
                         border: '1px solid var(--border-light)',
                         display: 'flex',
                         flexDirection: 'column',
@@ -380,13 +423,13 @@ export function AISupport({ onNavigateToVoice }) {
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <span style={{ fontWeight: 800, color: 'var(--corp-navy)', fontSize: '0.84rem' }}>
+                        <span style={{ fontWeight: 800, color: 'var(--primary-indigo)', fontSize: '0.84rem' }}>
                           Order #{msg.order_info.order_id} Verified
                         </span>
                         <span className="badge badge-success">Authenticated</span>
                       </div>
                       <div style={{ fontSize: '0.78rem', color: 'var(--muted-text)' }}>
-                        Status: <strong style={{ color: 'var(--corp-navy)' }}>{msg.order_info.status}</strong> • Expected: {msg.order_info.promised_delivery_date || msg.order_info.delivery_date || 'N/A'}
+                        Status: <strong style={{ color: 'var(--primary-indigo)' }}>{msg.order_info.status}</strong> • Expected: {msg.order_info.promised_delivery_date || msg.order_info.delivery_date || 'N/A'}
                       </div>
                     </div>
                   )}
@@ -399,7 +442,7 @@ export function AISupport({ onNavigateToVoice }) {
                         padding: '0.85rem 1rem',
                         borderRadius: 'var(--radius-sm)',
                         backgroundColor: 'var(--warning-subtle)',
-                        border: '1px solid rgba(180, 83, 9, 0.25)',
+                        border: '1px solid var(--warning-border)',
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '4px',
@@ -441,7 +484,7 @@ export function AISupport({ onNavigateToVoice }) {
                         style={{ fontSize: '0.74rem', padding: '2px 8px' }}
                         title="Copy answer"
                       >
-                        {copiedId === msg.id ? <Check size={13} color="#0E703C" /> : <Copy size={13} />}
+                        {copiedId === msg.id ? <Check size={13} color="#21865B" /> : <Copy size={13} />}
                         <span>{copiedId === msg.id ? 'Copied' : 'Copy'}</span>
                       </button>
                     </div>
@@ -457,39 +500,42 @@ export function AISupport({ onNavigateToVoice }) {
               <div
                 style={{
                   padding: '0.75rem 1.15rem',
-                  borderRadius: '8px 8px 8px 1px',
+                  borderRadius: '10px 10px 10px 2px',
                   backgroundColor: '#FFFFFF',
-                  border: '1px solid var(--border-light)',
+                  border: '1px solid var(--border-card)',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px',
+                  boxShadow: 'var(--shadow-xs)',
                 }}
               >
                 <span
+                  className="pulse-indicator"
                   style={{
                     width: '6px',
                     height: '6px',
                     borderRadius: '50%',
-                    backgroundColor: '#0066FF',
-                    animation: 'pulse-recording 1.2s infinite ease-in-out',
+                    backgroundColor: 'var(--accent-violet)',
                   }}
                 />
                 <span
+                  className="pulse-indicator"
                   style={{
                     width: '6px',
                     height: '6px',
                     borderRadius: '50%',
-                    backgroundColor: '#0052CC',
-                    animation: 'pulse-recording 1.2s 0.2s infinite ease-in-out',
+                    backgroundColor: '#9D68FF',
+                    animationDelay: '0.2s',
                   }}
                 />
                 <span
+                  className="pulse-indicator"
                   style={{
                     width: '6px',
                     height: '6px',
                     borderRadius: '50%',
-                    backgroundColor: '#CBD5E1',
-                    animation: 'pulse-recording 1.2s 0.4s infinite ease-in-out',
+                    backgroundColor: 'var(--border-medium)',
+                    animationDelay: '0.4s',
                   }}
                 />
                 <span style={{ fontSize: '0.78rem', color: 'var(--muted-text)', marginLeft: '6px', fontWeight: 600 }}>
@@ -507,7 +553,7 @@ export function AISupport({ onNavigateToVoice }) {
           style={{
             padding: '1.25rem 2.5rem 1.75rem',
             backgroundColor: '#FFFFFF',
-            borderTop: '1px solid var(--border-light)',
+            borderTop: '1px solid var(--border-card)',
           }}
         >
           <div
@@ -515,10 +561,11 @@ export function AISupport({ onNavigateToVoice }) {
               position: 'relative',
               display: 'flex',
               alignItems: 'center',
-              backgroundColor: 'var(--bg-neutral)',
+              backgroundColor: 'var(--light-bg)',
               borderRadius: 'var(--radius-sm)',
               border: '1px solid var(--border-medium)',
               padding: '0.45rem 0.65rem 0.45rem 1.15rem',
+              transition: 'border-color var(--transition-fast)',
             }}
           >
             <input
@@ -535,7 +582,7 @@ export function AISupport({ onNavigateToVoice }) {
                 outline: 'none',
                 padding: '0.5rem 0',
                 fontSize: '0.94rem',
-                color: 'var(--corp-navy)',
+                color: 'var(--primary-indigo)',
               }}
             />
 
@@ -544,20 +591,16 @@ export function AISupport({ onNavigateToVoice }) {
                 type="button"
                 onClick={onNavigateToVoice}
                 title="Open Voice Studio (Gnani.ai Speech)"
+                className="btn-ghost"
                 style={{
-                  padding: '8px',
-                  borderRadius: '4px',
+                  padding: '7px',
+                  borderRadius: 'var(--radius-xs)',
                   color: 'var(--muted-text)',
                   backgroundColor: '#FFFFFF',
-                  border: '1px solid var(--border-light)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  border: '1px solid var(--border-card)',
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--accent-blue)')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--muted-text)')}
               >
-                <Mic size={17} />
+                <Mic size={16} />
               </button>
 
               <button
