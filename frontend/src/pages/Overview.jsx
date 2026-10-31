@@ -20,6 +20,8 @@ import {
   Layers,
   Radio,
   Zap,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
 import { api } from '../services/api';
 import { EmptyState } from '../components/EmptyState';
@@ -28,6 +30,8 @@ export function Overview({ onNavigate }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [hoveredBarIndex, setHoveredBarIndex] = useState(null);
+  const [expandedFaq, setExpandedFaq] = useState(null);
 
   const fetchOverview = async () => {
     try {
@@ -68,9 +72,13 @@ export function Overview({ onNavigate }) {
   const activityData = data?.conversation_activity || [];
   const channelData = data?.channel_breakdown || { text: 0, voice: 0 };
 
+  const totalChannelInteractions = (channelData.text || 0) + (channelData.voice || 0);
+  const textPercent = totalChannelInteractions > 0 ? Math.round((channelData.text / totalChannelInteractions) * 100) : 65;
+  const voicePercent = totalChannelInteractions > 0 ? 100 - textPercent : 35;
+
   return (
     <div className="page-body animate-fade-in">
-      {/* Refined SaaS Hero Section (Linear / Stripe Inspired) */}
+      {/* Refined SaaS Hero Section */}
       <div
         style={{
           backgroundColor: '#FFFFFF',
@@ -88,7 +96,6 @@ export function Overview({ onNavigate }) {
           overflow: 'hidden',
         }}
       >
-        {/* Subtle geometric gradient glow */}
         <div
           style={{
             position: 'absolute',
@@ -162,7 +169,7 @@ export function Overview({ onNavigate }) {
         </div>
       </div>
 
-      {/* Primary KPI Cards Grid (Refined SaaS Metric Containers) */}
+      {/* Primary KPI Cards Grid */}
       <div
         style={{
           display: 'grid',
@@ -291,9 +298,9 @@ export function Overview({ onNavigate }) {
         </div>
       </div>
 
-      {/* Main Split Grid: Activity Visualizer & AI Service Health */}
+      {/* Main Split Grid: Enhanced Activity Visualizer & AI Service Health */}
       <div style={{ display: 'grid', gridTemplateColumns: '1.9fr 1.1fr', gap: '1.75rem', marginBottom: '2rem' }}>
-        {/* Conversation Activity Visualizer */}
+        {/* Conversation Activity Visualizer with Interactive Tooltips */}
         <div className="zm-card" style={{ padding: '1.75rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
             <div>
@@ -302,7 +309,7 @@ export function Overview({ onNavigate }) {
                 Conversational Volume & Channel Distribution
               </h2>
               <p style={{ fontSize: '0.82rem', color: 'var(--muted-text)', marginTop: '0.2rem' }}>
-                Daily interaction trends leading to VoiceOps reference date: 20 October 2026
+                Multi-channel session velocity leading to baseline date: 20 October 2026
               </p>
             </div>
             <div style={{ display: 'flex', gap: '0.85rem', fontSize: '0.78rem', fontWeight: 600 }}>
@@ -315,44 +322,106 @@ export function Overview({ onNavigate }) {
             </div>
           </div>
 
-          {/* Bar Chart Visualization */}
+          {/* Bar Chart Visualization with Hover Tooltip */}
           {activityData.length > 0 ? (
-            <div style={{ height: '210px', display: 'flex', alignItems: 'flex-end', gap: '16px', paddingBottom: '1.75rem', borderBottom: '1px solid var(--border-light)' }}>
-              {activityData.map((item, idx) => {
-                const maxVal = Math.max(...activityData.map((d) => (d.text || 0) + (d.voice || 0)), 10);
-                const textH = ((item.text || 0) / maxVal) * 150;
-                const voiceH = ((item.voice || 0) / maxVal) * 150;
+            <div style={{ position: 'relative' }}>
+              <div style={{ height: '210px', display: 'flex', alignItems: 'flex-end', gap: '14px', paddingBottom: '1.75rem', borderBottom: '1px solid var(--border-light)' }}>
+                {activityData.map((item, idx) => {
+                  const maxVal = Math.max(...activityData.map((d) => (d.text || 0) + (d.voice || 0)), 10);
+                  const textH = ((item.text || 0) / maxVal) * 150;
+                  const voiceH = ((item.voice || 0) / maxVal) * 150;
+                  const total = (item.text || 0) + (item.voice || 0);
+                  const isHovered = hoveredBarIndex === idx;
 
-                return (
-                  <div key={idx} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-                    <div style={{ width: '100%', maxWidth: '32px', display: 'flex', flexDirection: 'column-reverse', height: '150px', justifyContent: 'flex-start' }}>
+                  return (
+                    <div
+                      key={idx}
+                      style={{
+                        flex: 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '8px',
+                        cursor: 'pointer',
+                        position: 'relative',
+                      }}
+                      onMouseEnter={() => setHoveredBarIndex(idx)}
+                      onMouseLeave={() => setHoveredBarIndex(null)}
+                    >
+                      {/* Floating tooltip */}
+                      {isHovered && (
+                        <div
+                          style={{
+                            position: 'absolute',
+                            top: '-36px',
+                            backgroundColor: 'var(--primary-indigo)',
+                            color: '#FFFFFF',
+                            padding: '3px 8px',
+                            borderRadius: 'var(--radius-xs)',
+                            fontSize: '0.7rem',
+                            fontWeight: 700,
+                            whiteSpace: 'nowrap',
+                            boxShadow: 'var(--shadow-md)',
+                            zIndex: 10,
+                          }}
+                        >
+                          {total} sessions ({item.voice || 0} voice, {item.text || 0} text)
+                        </div>
+                      )}
+
                       <div
                         style={{
-                          height: `${Math.max(voiceH, 2)}px`,
-                          backgroundColor: 'var(--accent-violet)',
-                          borderRadius: '2px 2px 0 0',
                           width: '100%',
-                          transition: 'height var(--transition-normal)',
+                          maxWidth: '34px',
+                          display: 'flex',
+                          flexDirection: 'column-reverse',
+                          height: '150px',
+                          justifyContent: 'flex-start',
+                          opacity: hoveredBarIndex === null || isHovered ? 1 : 0.45,
+                          transform: isHovered ? 'scaleY(1.03)' : 'none',
+                          transition: 'all var(--transition-fast)',
                         }}
-                        title={`Voice: ${item.voice || 0}`}
-                      />
-                      <div
-                        style={{
-                          height: `${Math.max(textH, 4)}px`,
-                          backgroundColor: 'var(--primary-indigo)',
-                          borderRadius: voiceH > 0 ? '0' : '2px 2px 0 0',
-                          width: '100%',
-                          transition: 'height var(--transition-normal)',
-                        }}
-                        title={`Text: ${item.text || 0}`}
-                      />
+                      >
+                        <div
+                          style={{
+                            height: `${Math.max(voiceH, 2)}px`,
+                            backgroundColor: 'var(--accent-violet)',
+                            borderRadius: '3px 3px 0 0',
+                            width: '100%',
+                          }}
+                        />
+                        <div
+                          style={{
+                            height: `${Math.max(textH, 4)}px`,
+                            backgroundColor: 'var(--primary-indigo)',
+                            borderRadius: voiceH > 0 ? '0' : '3px 3px 0 0',
+                            width: '100%',
+                          }}
+                        />
+                      </div>
+                      <span style={{ fontSize: '0.74rem', color: isHovered ? 'var(--accent-violet)' : 'var(--muted-text)', fontWeight: isHovered ? 700 : 600 }}>
+                        {item.label}
+                      </span>
                     </div>
-                    <span style={{ fontSize: '0.74rem', color: 'var(--muted-text)', fontWeight: 600 }}>
-                      {item.label}
-                    </span>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+
+              {/* Channel Distribution Progress Bar */}
+              <div style={{ marginTop: '1.25rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', marginBottom: '6px' }}>
+                  <span style={{ color: 'var(--muted-text)' }}>
+                    Channel Mix: <strong style={{ color: 'var(--primary-indigo)' }}>{textPercent}% Text Support</strong> vs <strong style={{ color: 'var(--accent-violet)' }}>{voicePercent}% Gnani Voice</strong>
+                  </span>
+                  <span style={{ fontWeight: 700, color: 'var(--primary-indigo)', fontFamily: 'var(--font-mono)' }}>
+                    {totalChannelInteractions} Total Recorded
+                  </span>
+                </div>
+                <div style={{ height: '7px', width: '100%', borderRadius: 'var(--radius-full)', backgroundColor: 'var(--surface-subtle)', overflow: 'hidden', display: 'flex' }}>
+                  <div style={{ width: `${textPercent}%`, backgroundColor: 'var(--primary-indigo)' }} title={`Text: ${textPercent}%`} />
+                  <div style={{ width: `${voicePercent}%`, backgroundColor: 'var(--accent-violet)' }} title={`Voice: ${voicePercent}%`} />
+                </div>
+              </div>
             </div>
           ) : (
             <div style={{ height: '180px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -361,11 +430,6 @@ export function Overview({ onNavigate }) {
               </span>
             </div>
           )}
-
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem', fontSize: '0.78rem', color: 'var(--muted-text)' }}>
-            <span>Total Recorded Sessions: <strong style={{ color: 'var(--primary-indigo)' }}>{kpis.total_conversations ?? 0}</strong></span>
-            <span>Channel Ratio: <strong style={{ color: 'var(--accent-violet)' }}>{channelData.voice} Voice / {channelData.text} Text</strong></span>
-          </div>
         </div>
 
         {/* AI Service Health Matrix */}
@@ -444,7 +508,7 @@ export function Overview({ onNavigate }) {
 
       {/* Tri-Column Lower Deck: FAQs, Recent Sessions, Escalated Tickets */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.75rem' }}>
-        {/* Frequently Asked Questions */}
+        {/* Frequently Asked Questions (Expandable Inquiries) */}
         <div className="zm-card" style={{ padding: '1.75rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
             <div>
@@ -453,33 +517,48 @@ export function Overview({ onNavigate }) {
                 Frequent Inquiries
               </h2>
             </div>
-            <span style={{ fontSize: '0.74rem', color: 'var(--muted-text)', fontWeight: 600 }}>Practice Set</span>
+            <span style={{ fontSize: '0.74rem', color: 'var(--muted-text)', fontWeight: 600 }}>Policy Catalog</span>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            {faqs.slice(0, 5).map((faq, idx) => (
-              <div
-                key={idx}
-                style={{
-                  padding: '0.85rem 1rem',
-                  borderRadius: 'var(--radius-sm)',
-                  backgroundColor: 'var(--light-bg)',
-                  border: '1px solid var(--border-light)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '4px',
-                  transition: 'border-color var(--transition-fast)',
-                }}
-              >
-                <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--primary-indigo)' }}>
-                  {faq.question || faq.query}
+            {faqs.slice(0, 5).map((faq, idx) => {
+              const isExpanded = expandedFaq === idx;
+              return (
+                <div
+                  key={idx}
+                  onClick={() => setExpandedFaq(isExpanded ? null : idx)}
+                  style={{
+                    padding: '0.85rem 1rem',
+                    borderRadius: 'var(--radius-sm)',
+                    backgroundColor: 'var(--light-bg)',
+                    border: '1px solid var(--border-light)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '4px',
+                    cursor: 'pointer',
+                    transition: 'all var(--transition-fast)',
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--primary-indigo)' }}>
+                      {faq.question || faq.query}
+                    </div>
+                    {isExpanded ? <ChevronUp size={15} color="#723ECF" /> : <ChevronDown size={15} color="#77758A" />}
+                  </div>
+
+                  {isExpanded && (
+                    <div style={{ fontSize: '0.8rem', color: 'var(--body-text)', marginTop: '6px', paddingTop: '6px', borderTop: '1px solid var(--border-medium)', lineHeight: 1.45 }}>
+                      {faq.answer || 'Grounded policy answers are retrieved deterministically by ZentroMart RAG v4 with source citations.'}
+                    </div>
+                  )}
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--muted-text)', marginTop: '2px' }}>
+                    <span>Category: <strong style={{ color: 'var(--accent-violet)' }}>{faq.category || 'Policy Rules'}</strong></span>
+                    <span>{faq.frequency ? `${faq.frequency} inquiries` : 'Verified Benchmark'}</span>
+                  </div>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--muted-text)' }}>
-                  <span>Category: <strong style={{ color: 'var(--accent-violet)' }}>{faq.category || 'Return Policy'}</strong></span>
-                  <span>{faq.frequency ? `${faq.frequency} inquiries` : 'Verified Benchmark'}</span>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
