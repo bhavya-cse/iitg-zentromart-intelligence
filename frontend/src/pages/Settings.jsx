@@ -90,7 +90,7 @@ export function Settings() {
   };
 
   return (
-    <div className="page-body">
+    <div className="page-body animate-fade-in">
       {/* Enterprise Page Header */}
       <div
         style={{
@@ -103,16 +103,15 @@ export function Settings() {
         }}
       >
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.5rem' }}>
-            <span className="badge badge-blue">ENTERPRISE GOVERNANCE</span>
-            <span className="badge badge-muted">SYSTEM V2026.1</span>
-            <span className="badge badge-outline">TCS-INSPIRED CORPORATE ARCHITECTURE</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.45rem' }}>
+            <span className="badge badge-violet">Enterprise Governance</span>
+            <span className="badge badge-muted">System v2026.1</span>
           </div>
           <h1
             style={{
               fontSize: '2.15rem',
               fontWeight: 800,
-              color: 'var(--corp-navy)',
+              color: 'var(--primary-indigo)',
               letterSpacing: '-0.025em',
               marginBottom: '0.35rem',
             }}
@@ -140,10 +139,11 @@ export function Settings() {
       {/* Save Success Alert */}
       {saveSuccess && (
         <div
+          className="animate-slide-up"
           style={{
             padding: '1rem 1.4rem',
             backgroundColor: 'var(--success-subtle)',
-            border: '1px solid rgba(14, 112, 60, 0.25)',
+            border: '1px solid var(--success-border)',
             borderLeft: '4px solid var(--success)',
             borderRadius: 'var(--radius-sm)',
             color: 'var(--success)',
@@ -163,10 +163,11 @@ export function Settings() {
       {/* Save Error Alert */}
       {saveError && (
         <div
+          className="animate-slide-up"
           style={{
             padding: '1rem 1.4rem',
             backgroundColor: 'var(--error-subtle)',
-            border: '1px solid rgba(209, 52, 56, 0.25)',
+            border: '1px solid var(--error-border)',
             borderLeft: '4px solid var(--error)',
             borderRadius: 'var(--radius-sm)',
             color: 'var(--error)',
@@ -190,25 +191,26 @@ export function Settings() {
           padding: '1.25rem 1.75rem',
           marginBottom: '2rem',
           backgroundColor: '#FFFFFF',
-          borderLeft: '4px solid var(--accent-blue)',
+          borderLeft: '4px solid var(--accent-violet)',
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
             <div>
               <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--muted-text)', fontWeight: 700 }}>
-                Engine Operational State
+                Engine State
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', marginTop: '3px' }}>
                 <span
+                  className="pulse-indicator"
                   style={{
-                    width: 9,
-                    height: 9,
+                    width: 8,
+                    height: 8,
                     borderRadius: '50%',
-                    backgroundColor: health?.status === 'operational' ? 'var(--success)' : '#D97706',
+                    backgroundColor: health?.status === 'operational' ? 'var(--success)' : 'var(--warning)',
                   }}
                 />
-                <span style={{ fontWeight: 800, color: 'var(--corp-navy)', fontSize: '0.94rem', textTransform: 'uppercase' }}>
+                <span style={{ fontWeight: 800, color: 'var(--primary-indigo)', fontSize: '0.94rem', textTransform: 'uppercase' }}>
                   {health?.status || 'Active (Grounded)'}
                 </span>
               </div>
@@ -221,8 +223,8 @@ export function Settings() {
                 RAG Knowledge Index
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '3px' }}>
-                <ShieldCheck size={15} color="#0066FF" />
-                <span style={{ fontWeight: 700, color: 'var(--corp-navy)', fontSize: '0.88rem' }}>
+                <ShieldCheck size={15} color="#723ECF" />
+                <span style={{ fontWeight: 700, color: 'var(--primary-indigo)', fontSize: '0.88rem' }}>
                   {health?.rag_ready ? 'Precedence v4 (44 Chunks Grounded)' : 'Indexed & Operational'}
                 </span>
               </div>
@@ -235,8 +237,8 @@ export function Settings() {
                 Acoustic Speech Layer
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '3px' }}>
-                <Radio size={15} color="#0E703C" />
-                <span style={{ fontWeight: 700, color: 'var(--corp-navy)', fontSize: '0.88rem' }}>
+                <Radio size={15} color="#21865B" />
+                <span style={{ fontWeight: 700, color: 'var(--primary-indigo)', fontSize: '0.88rem' }}>
                   Gnani STT / TTS ({settings.gnani_tts_model})
                 </span>
               </div>
@@ -249,8 +251,8 @@ export function Settings() {
                 Benchmark Calendar Date
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '3px' }}>
-                <Clock size={15} color="#0066FF" />
-                <span style={{ fontWeight: 700, color: 'var(--corp-navy)', fontSize: '0.88rem' }}>
+                <Clock size={15} color="#723ECF" />
+                <span style={{ fontWeight: 700, color: 'var(--primary-indigo)', fontSize: '0.88rem' }}>
                   20 October 2026 (Locked)
                 </span>
               </div>
@@ -259,7 +261,7 @@ export function Settings() {
 
           <span className="badge badge-success" style={{ fontWeight: 700 }}>
             <CheckCircle2 size={12} style={{ marginRight: 4 }} />
-            COMPLIANT WITH VOICEOPS 2026
+            VOICEOPS 2026 COMPLIANT
           </span>
         </div>
       </div>
@@ -282,16 +284,16 @@ export function Settings() {
                 width: 36,
                 height: 36,
                 borderRadius: 'var(--radius-sm)',
-                backgroundColor: 'var(--accent-blue-subtle)',
+                backgroundColor: 'var(--soft-violet)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <Key size={18} color="#0066FF" />
+              <Key size={18} color="#723ECF" />
             </div>
             <div>
-              <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+              <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
                 API Keys & Engine Credentials
               </h2>
               <p style={{ fontSize: '0.84rem', color: 'var(--muted-text)' }}>
@@ -300,11 +302,11 @@ export function Settings() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.75rem', marginTop: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.75rem', marginTop: '1.5rem' }}>
             {/* Gnani API Key */}
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.45rem' }}>
-                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--corp-navy)' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--primary-indigo)' }}>
                   Gnani.ai API Key (GNANI_API_KEY)
                 </label>
                 {settings.gnani_api_key_masked && (
@@ -327,7 +329,7 @@ export function Settings() {
                     fontFamily: 'var(--font-mono)',
                     fontSize: '0.88rem',
                     backgroundColor: '#FFFFFF',
-                    color: 'var(--corp-navy)',
+                    color: 'var(--primary-indigo)',
                   }}
                 />
                 <button
@@ -357,7 +359,7 @@ export function Settings() {
             {/* Gemini API Key */}
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.45rem' }}>
-                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--corp-navy)' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--primary-indigo)' }}>
                   Gemini / Foundation LLM API Key (GEMINI_API_KEY)
                 </label>
                 {settings.gemini_api_key_masked && (
@@ -380,7 +382,7 @@ export function Settings() {
                     fontFamily: 'var(--font-mono)',
                     fontSize: '0.88rem',
                     backgroundColor: '#FFFFFF',
-                    color: 'var(--corp-navy)',
+                    color: 'var(--primary-indigo)',
                   }}
                 />
                 <button
@@ -408,13 +410,13 @@ export function Settings() {
             </div>
           </div>
 
-          {/* Enterprise Security Callout */}
+          {/* Security Callout */}
           <div
             style={{
               marginTop: '1.5rem',
               padding: '0.85rem 1.15rem',
-              backgroundColor: 'var(--bg-slate)',
-              border: '1px solid var(--border-light)',
+              backgroundColor: 'var(--light-bg)',
+              border: '1px solid var(--border-card)',
               borderRadius: 'var(--radius-sm)',
               display: 'flex',
               alignItems: 'center',
@@ -423,9 +425,9 @@ export function Settings() {
               color: 'var(--muted-text)',
             }}
           >
-            <Lock size={15} color="#0066FF" />
+            <Lock size={15} color="#723ECF" />
             <span>
-              <strong style={{ color: 'var(--corp-navy)' }}>Enterprise Zero-Trust Security:</strong> All API keys are securely persisted to the host server environment (.env) and never exposed over client-side JavaScript network traffic.
+              <strong style={{ color: 'var(--primary-indigo)' }}>Enterprise Zero-Trust Security:</strong> All API keys are securely persisted to the host server environment (.env) and never exposed over client-side JavaScript network traffic.
             </span>
           </div>
         </div>
@@ -447,16 +449,16 @@ export function Settings() {
                 width: 36,
                 height: 36,
                 borderRadius: 'var(--radius-sm)',
-                backgroundColor: 'var(--accent-blue-subtle)',
+                backgroundColor: 'var(--soft-violet)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <Radio size={18} color="#0066FF" />
+              <Radio size={18} color="#723ECF" />
             </div>
             <div>
-              <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+              <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
                 Gnani Voice & Acoustic Parameters
               </h2>
               <p style={{ fontSize: '0.84rem', color: 'var(--muted-text)' }}>
@@ -465,10 +467,10 @@ export function Settings() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.75rem', marginTop: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.75rem', marginTop: '1.5rem' }}>
             {/* Model Selector */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: 'var(--corp-navy)', marginBottom: '0.45rem' }}>
+              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: 'var(--primary-indigo)', marginBottom: '0.45rem' }}>
                 Gnani TTS Neural Model
               </label>
               <select
@@ -481,7 +483,7 @@ export function Settings() {
                   border: '1px solid var(--border-medium)',
                   fontSize: '0.88rem',
                   backgroundColor: '#FFFFFF',
-                  color: 'var(--corp-navy)',
+                  color: 'var(--primary-indigo)',
                   fontWeight: 600,
                 }}
               >
@@ -496,10 +498,10 @@ export function Settings() {
             {/* Temperature */}
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.45rem' }}>
-                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--corp-navy)' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--primary-indigo)' }}>
                   LLM Policy Temperature
                 </label>
-                <span className="badge badge-blue" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem' }}>
+                <span className="badge badge-violet" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem' }}>
                   {settings.temperature}
                 </span>
               </div>
@@ -517,7 +519,7 @@ export function Settings() {
                   border: '1px solid var(--border-medium)',
                   fontSize: '0.88rem',
                   backgroundColor: '#FFFFFF',
-                  color: 'var(--corp-navy)',
+                  color: 'var(--primary-indigo)',
                   fontFamily: 'var(--font-mono)',
                   fontWeight: 600,
                 }}
@@ -546,16 +548,16 @@ export function Settings() {
                 width: 36,
                 height: 36,
                 borderRadius: 'var(--radius-sm)',
-                backgroundColor: 'var(--accent-blue-subtle)',
+                backgroundColor: 'var(--soft-violet)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <Database size={18} color="#0066FF" />
+              <Database size={18} color="#723ECF" />
             </div>
             <div>
-              <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+              <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
                 VoiceOps 2026 Dataset & Calendar Rules
               </h2>
               <p style={{ fontSize: '0.84rem', color: 'var(--muted-text)' }}>
@@ -564,11 +566,11 @@ export function Settings() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.75rem', marginTop: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.75rem', marginTop: '1.5rem' }}>
             {/* Reference Date */}
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.45rem' }}>
-                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--corp-navy)' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--primary-indigo)' }}>
                   System Reference Date (Baseline Calendar)
                 </label>
                 <span className="badge badge-muted" style={{ fontSize: '0.68rem' }}>
@@ -584,10 +586,10 @@ export function Settings() {
                   padding: '0.7rem 0.95rem',
                   borderRadius: 'var(--radius-sm)',
                   border: '1px solid var(--border-medium)',
-                  backgroundColor: 'var(--bg-slate)',
+                  backgroundColor: 'var(--surface-subtle)',
                   fontFamily: 'var(--font-mono)',
                   fontSize: '0.88rem',
-                  color: 'var(--corp-navy)',
+                  color: 'var(--primary-indigo)',
                   fontWeight: 700,
                   cursor: 'not-allowed',
                 }}
@@ -599,7 +601,7 @@ export function Settings() {
 
             {/* Dataset Directory Path */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: 'var(--corp-navy)', marginBottom: '0.45rem' }}>
+              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: 'var(--primary-indigo)', marginBottom: '0.45rem' }}>
                 Capstone Dataset Directory Path
               </label>
               <input
@@ -615,7 +617,7 @@ export function Settings() {
                   fontFamily: 'var(--font-mono)',
                   fontSize: '0.88rem',
                   backgroundColor: '#FFFFFF',
-                  color: 'var(--corp-navy)',
+                  color: 'var(--primary-indigo)',
                 }}
               />
               <span style={{ fontSize: '0.74rem', color: 'var(--muted-text)', marginTop: '6px', display: 'block', lineHeight: 1.4 }}>
@@ -630,14 +632,14 @@ export function Settings() {
               style={{
                 marginTop: '1.5rem',
                 padding: '1.25rem',
-                backgroundColor: 'var(--bg-slate)',
-                border: '1px solid var(--border-light)',
+                backgroundColor: 'var(--light-bg)',
+                border: '1px solid var(--border-card)',
                 borderRadius: 'var(--radius-sm)',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
-                <FileCheck size={16} color="#0E703C" />
-                <span style={{ fontWeight: 700, fontSize: '0.86rem', color: 'var(--corp-navy)' }}>
+                <FileCheck size={16} color="#21865B" />
+                <span style={{ fontWeight: 700, fontSize: '0.86rem', color: 'var(--primary-indigo)' }}>
                   Dataset Integrity Audit
                 </span>
                 <span className="badge badge-success" style={{ marginLeft: 'auto' }}>
@@ -658,7 +660,7 @@ export function Settings() {
                       alignItems: 'center',
                     }}
                   >
-                    <span style={{ fontSize: '0.78rem', fontFamily: 'var(--font-mono)', color: 'var(--corp-navy)' }}>
+                    <span style={{ fontSize: '0.78rem', fontFamily: 'var(--font-mono)', color: 'var(--primary-indigo)' }}>
                       {file}
                     </span>
                     <span style={{ fontSize: '0.74rem', fontWeight: 700, color: info.present ? 'var(--success)' : 'var(--error)' }}>
@@ -679,10 +681,12 @@ export function Settings() {
             alignItems: 'center',
             paddingTop: '0.5rem',
             paddingBottom: '2.5rem',
+            flexWrap: 'wrap',
+            gap: '1rem',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.82rem', color: 'var(--muted-text)' }}>
-            <ShieldCheck size={16} color="#0066FF" />
+            <ShieldCheck size={16} color="#723ECF" />
             <span>Changes take effect immediately across all active agent threads and voice pipelines.</span>
           </div>
 
@@ -694,7 +698,7 @@ export function Settings() {
               height: '46px',
               padding: '0 2rem',
               fontSize: '0.94rem',
-              boxShadow: 'var(--shadow-blue)',
+              boxShadow: 'var(--shadow-violet)',
             }}
           >
             <Save size={17} />

@@ -11,6 +11,7 @@ export function EmptyState({
 }) {
   return (
     <div
+      className="zm-card animate-fade-in"
       style={{
         padding: '3.5rem 2rem',
         textAlign: 'center',
@@ -19,8 +20,8 @@ export function EmptyState({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#FFFFFF',
-        borderRadius: 'var(--radius-md)',
-        border: '1px solid var(--border-light)',
+        borderRadius: 'var(--radius-lg)',
+        border: '1px solid var(--border-card)',
         boxShadow: 'var(--shadow-xs)',
         maxWidth: '560px',
         margin: '2rem auto',
@@ -30,14 +31,14 @@ export function EmptyState({
         style={{
           width: '56px',
           height: '56px',
-          borderRadius: '8px',
-          backgroundColor: 'var(--accent-blue-subtle)',
+          borderRadius: 'var(--radius-md)',
+          backgroundColor: 'var(--soft-violet)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: 'var(--accent-blue)',
+          color: 'var(--accent-violet)',
           marginBottom: '1.25rem',
-          border: '1px solid rgba(0, 102, 255, 0.2)',
+          border: '1px solid rgba(114, 62, 207, 0.2)',
         }}
       >
         <Icon size={26} />
@@ -47,7 +48,7 @@ export function EmptyState({
         style={{
           fontSize: '1.22rem',
           fontWeight: 800,
-          color: 'var(--corp-navy)',
+          color: 'var(--primary-indigo)',
           marginBottom: '0.45rem',
           letterSpacing: '-0.02em',
         }}
@@ -69,7 +70,7 @@ export function EmptyState({
 
       {actionLabel && (
         <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'center' }}>
-          <button onClick={onAction} className="btn-blue">
+          <button onClick={onAction} className="btn-primary">
             <span>{actionLabel}</span>
             <ArrowRight size={15} />
           </button>
