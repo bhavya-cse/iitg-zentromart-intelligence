@@ -111,24 +111,71 @@ class DatasetService:
                 return p
         return None
 
+
     def _load_practice_files(self):
-        """Loads practice benchmark files (52 questions, 23 conversations)."""
-        # Look for practice questions json or csv
-        q_file = self._find_file("practice_questions.json") or self._find_file("questions.json")
+        """Loads practice questions and conversations from JSON or CSV files."""
+
+        # Load practice questions
+        q_file = (
+            self._find_file("practice_questions.json")
+            or self._find_file("questions.json")
+        )
+
         if q_file and q_file.exists():
             try:
                 with open(q_file, "r", encoding="utf-8") as f:
                     self.practice_questions = json.load(f)
             except Exception as e:
-                logger.error(f"Error reading practice questions: {e}")
+                logger.error(f"Error reading practice questions JSON: {e}")
+        else:
+            q_file = self._find_file("questions.csv")
+            if q_file and q_file.exists():
+                try:
+                    df = pd.read_csv(q_file, dtype=str).fillna("")
+                    self.practice_questions = df.to_dict(orient="records")
+                    logger.info(
+                        f"Loaded practice questions: {len(self.practice_questions)}"
+                    )
+                except Exception as e:
+                    logger.error(f"Error reading practice questions CSV: {e}")
 
-        conv_file = self._find_file("practice_conversations.json") or self._find_file("conversations.json")
+        # Load practice conversations
+        conv_file = (
+            self._find_file("practice_conversations.json")
+            or self._find_file("conversations.json")
+        )
+
         if conv_file and conv_file.exists():
             try:
                 with open(conv_file, "r", encoding="utf-8") as f:
                     self.practice_conversations = json.load(f)
             except Exception as e:
-                logger.error(f"Error reading practice conversations: {e}")
+                logger.error(f"Error reading practice conversations JSON: {e}")
+        else:
+            conv_file = self._find_file("conversations.csv")
+            if conv_file and conv_file.exists():
+                try:
+                    df = pd.read_csv(conv_file, dtype=str).fillna("")
+
+                    # Group turns by conversation ID
+                    self.practice_conversations = [
+                        {
+                            "conversation_id": conversation_id,
+                            "turns": group.to_dict(orient="records"),
+                        }
+                        for conversation_id, group in df.groupby(
+                            "conversation_id", sort=False
+                        )
+                    ]
+
+                    logger.info(
+                        f"Loaded practice conversations: "
+                        f"{len(self.practice_conversations)} conversations, "
+                        f"{len(df)} turns"
+                    )
+                except Exception as e:
+                    logger.error(f"Error reading practice conversations CSV: {e}")
+
 
     # --- Business Days & Calendar Rules (Section 12) ---
     def is_business_day(self, d: date) -> bool:
