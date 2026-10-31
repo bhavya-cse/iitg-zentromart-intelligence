@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { TopNav } from './components/TopNav';
+import { Footer } from './components/Footer';
 import { Overview } from './pages/Overview';
 import { AISupport } from './pages/AISupport';
 import { VoiceStudio } from './pages/VoiceStudio';
@@ -78,6 +79,7 @@ export function App() {
         <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           {renderActivePage()}
         </main>
+        <Footer />
       </div>
     </div>
   );
