@@ -29,3 +29,6 @@ build/
 # Dataset files (download separately from organisers)
 Capstone_Project_Dataset_FTTT_2026/
 Capstone_Project_Dataset_FTTT_2026.zip
+
+# Generated voice/audio files
+backend/app/static/audio/

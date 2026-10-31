@@ -1,0 +1,3 @@
+SYNTHETIC DEMO DATA
+Generated randomly for local website and dashboard testing.
+Not official VoiceOps capstone data. Not valid for official evaluation.
