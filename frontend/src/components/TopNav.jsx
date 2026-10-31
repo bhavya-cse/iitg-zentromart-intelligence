@@ -2,11 +2,11 @@ import React from 'react';
 import {
   Bell,
   Menu,
-  CheckCircle2,
-  AlertCircle,
+  ShieldCheck,
   Radio,
+  Calendar,
+  Sparkles,
   Search,
-  ExternalLink,
 } from 'lucide-react';
 import { NAV_ITEMS } from './Sidebar';
 
@@ -17,59 +17,73 @@ export function TopNav({ currentTab, onOpenMobileMenu, systemStatus }) {
   return (
     <header
       style={{
-        height: '72px',
+        height: '70px',
         backgroundColor: '#FFFFFF',
         borderBottom: '1px solid var(--border-light)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '0 2.5rem',
+        padding: '0 2.25rem',
         position: 'sticky',
         top: 0,
         zIndex: 40,
         boxShadow: 'var(--shadow-xs)',
       }}
     >
-      {/* Left: Section Identity & Enterprise Breadcrumbs */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+      {/* Left: Breadcrumbs & Section Identity */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <button
           onClick={onOpenMobileMenu}
           aria-label="Toggle navigation menu"
+          className="btn-ghost mobile-menu-btn"
           style={{
-            display: 'none',
-            padding: '8px',
-            borderRadius: '4px',
-            color: 'var(--corp-navy)',
+            padding: '7px',
+            color: 'var(--primary-indigo)',
           }}
-          className="mobile-trigger"
         >
           <Menu size={20} />
         </button>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div
             style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '6px',
-              backgroundColor: 'var(--accent-blue-subtle)',
-              border: '1px solid rgba(0, 102, 255, 0.2)',
+              width: '34px',
+              height: '34px',
+              borderRadius: 'var(--radius-sm)',
+              backgroundColor: 'var(--soft-violet)',
+              border: '1px solid rgba(114, 62, 207, 0.22)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: 'var(--accent-blue)',
+              color: 'var(--accent-violet)',
             }}
           >
-            <Icon size={18} />
+            <Icon size={17} />
           </div>
 
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', lineHeight: 1 }}>
-              <span style={{ fontSize: '0.74rem', color: 'var(--muted-text)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                ZentroMart Enterprise
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', lineHeight: 1.1 }}>
+              <span
+                style={{
+                  fontSize: '0.74rem',
+                  color: 'var(--muted-text)',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.06em',
+                }}
+              >
+                ZentroMart
               </span>
-              <span style={{ fontSize: '0.74rem', color: 'var(--border-medium)' }}>/</span>
-              <h1 style={{ fontSize: '1.15rem', fontWeight: 800, margin: 0, color: 'var(--corp-navy)', letterSpacing: '-0.02em' }}>
+              <span style={{ fontSize: '0.74rem', color: 'var(--subtle-text)' }}>/</span>
+              <h1
+                style={{
+                  fontSize: '1.15rem',
+                  fontWeight: 800,
+                  margin: 0,
+                  color: 'var(--primary-indigo)',
+                  letterSpacing: '-0.02em',
+                }}
+              >
                 {currentNav.label}
               </h1>
             </div>
@@ -78,32 +92,34 @@ export function TopNav({ currentTab, onOpenMobileMenu, systemStatus }) {
       </div>
 
       {/* Right: Live Telemetry, Reference Date & Operator Badge */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-        {/* RAG & Gnani Service Pills */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        {/* RAG & Gnani Status Capsule */}
         <div
+          className="telemetry-capsule"
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '0.65rem',
+            gap: '0.75rem',
             padding: '0.35rem 0.85rem',
-            borderRadius: 'var(--radius-sm)',
-            backgroundColor: 'var(--bg-slate)',
-            border: '1px solid var(--border-light)',
+            borderRadius: 'var(--radius-full)',
+            backgroundColor: 'var(--surface-subtle)',
+            border: '1px solid var(--border-medium)',
             fontSize: '0.76rem',
             fontWeight: 600,
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
             <span
+              className="pulse-indicator"
               style={{
                 width: '6.5px',
                 height: '6.5px',
                 borderRadius: '50%',
-                backgroundColor: systemStatus?.rag_ready ? '#0E703C' : '#C28B00',
+                backgroundColor: systemStatus?.rag_ready ? 'var(--success)' : 'var(--warning)',
               }}
             />
-            <span style={{ color: 'var(--corp-navy)' }}>
-              RAG: {systemStatus?.rag_ready ? 'Indexed (v4)' : 'Standby'}
+            <span style={{ color: 'var(--primary-indigo)' }}>
+              RAG v4: {systemStatus?.rag_ready ? 'Precedence Active' : 'Standby'}
             </span>
           </div>
 
@@ -111,27 +127,28 @@ export function TopNav({ currentTab, onOpenMobileMenu, systemStatus }) {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
             <span
+              className="pulse-indicator"
               style={{
                 width: '6.5px',
                 height: '6.5px',
                 borderRadius: '50%',
-                backgroundColor: systemStatus?.gnani_configured ? '#0E703C' : '#C28B00',
+                backgroundColor: systemStatus?.gnani_configured ? 'var(--success)' : 'var(--warning)',
               }}
             />
-            <span style={{ color: 'var(--corp-navy)' }}>
-              Gnani Voice: {systemStatus?.gnani_configured ? 'Online' : 'Key Req.'}
+            <span style={{ color: 'var(--primary-indigo)' }}>
+              Gnani STT/TTS: {systemStatus?.gnani_configured ? 'Ready' : 'Setup Required'}
             </span>
           </div>
         </div>
 
-        {/* Capstone Reference Date */}
+        {/* Capstone Baseline Reference Date */}
         <div
-          title="VoiceOps Fixed Reference Date"
+          title="VoiceOps Fixed Reference Date Baseline"
           style={{
             fontSize: '0.76rem',
             color: 'var(--muted-text)',
             backgroundColor: '#FFFFFF',
-            border: '1px solid var(--border-light)',
+            border: '1px solid var(--border-card)',
             padding: '0.35rem 0.75rem',
             borderRadius: 'var(--radius-sm)',
             display: 'flex',
@@ -140,40 +157,12 @@ export function TopNav({ currentTab, onOpenMobileMenu, systemStatus }) {
             fontWeight: 500,
           }}
         >
+          <Calendar size={13} color="#723ECF" />
           <span>Ref:</span>
-          <strong style={{ color: 'var(--corp-navy)', fontFamily: 'var(--font-mono)' }}>20 Oct 2026</strong>
+          <strong style={{ color: 'var(--primary-indigo)', fontFamily: 'var(--font-mono)' }}>20 Oct 2026</strong>
         </div>
 
-        {/* Notifications */}
-        <button
-          style={{
-            position: 'relative',
-            padding: '8px',
-            borderRadius: '6px',
-            color: 'var(--corp-navy)',
-            border: '1px solid var(--border-light)',
-            backgroundColor: '#FFFFFF',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          aria-label="System Notifications"
-        >
-          <Bell size={17} />
-          <span
-            style={{
-              position: 'absolute',
-              top: '6px',
-              right: '6px',
-              width: '6px',
-              height: '6px',
-              borderRadius: '50%',
-              backgroundColor: 'var(--accent-blue)',
-            }}
-          />
-        </button>
-
-        {/* Enterprise Operator Profile */}
+        {/* Operator Profile */}
         <div
           style={{
             display: 'flex',
@@ -185,26 +174,26 @@ export function TopNav({ currentTab, onOpenMobileMenu, systemStatus }) {
         >
           <div
             style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '6px',
-              background: 'linear-gradient(135deg, #00122E 0%, #0066FF 100%)',
+              width: '34px',
+              height: '34px',
+              borderRadius: 'var(--radius-sm)',
+              background: 'linear-gradient(135deg, #17143F 0%, #723ECF 100%)',
               color: '#FFFFFF',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontWeight: 800,
-              fontSize: '0.84rem',
-              letterSpacing: '0.02em',
+              fontSize: '0.82rem',
+              boxShadow: '0 2px 6px rgba(23, 20, 63, 0.2)',
             }}
           >
             OP
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.2 }}>
-            <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--corp-navy)' }}>
+          <div className="operator-text" style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.15 }}>
+            <span style={{ fontSize: '0.84rem', fontWeight: 700, color: 'var(--primary-indigo)' }}>
               VoiceOps Admin
             </span>
-            <span style={{ fontSize: '0.72rem', color: 'var(--muted-text)', fontWeight: 500 }}>
+            <span style={{ fontSize: '0.7rem', color: 'var(--muted-text)', fontWeight: 500 }}>
               Level 3 Support
             </span>
           </div>

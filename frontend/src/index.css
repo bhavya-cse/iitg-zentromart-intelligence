@@ -536,3 +536,41 @@ textarea::placeholder {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--subtle-text);
 }
+
+/* ==========================================================================
+   Responsive Shell Rules
+   ========================================================================== */
+@media (max-width: 900px) {
+  .app-sidebar {
+    position: fixed !important;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    transform: translateX(-100%);
+    box-shadow: var(--shadow-xl) !important;
+  }
+
+  .app-sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .mobile-menu-btn {
+    display: inline-flex !important;
+  }
+
+  .telemetry-capsule {
+    display: none !important;
+  }
+}
+
+@media (min-width: 901px) {
+  .mobile-menu-btn {
+    display: none !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .operator-text {
+    display: none !important;
+  }
+}

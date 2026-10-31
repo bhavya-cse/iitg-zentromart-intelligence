@@ -57,7 +57,7 @@ export function App() {
 
   return (
     <div className="app-container">
-      {/* Collapsible Sidebar */}
+      {/* Collapsible SaaS Sidebar */}
       <Sidebar
         currentTab={currentTab}
         onSelectTab={(tab) => {
@@ -67,6 +67,8 @@ export function App() {
         collapsed={sidebarCollapsed}
         onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
         systemStatus={systemStatus}
+        mobileOpen={mobileMenuOpen}
+        onCloseMobile={() => setMobileMenuOpen(false)}
       />
 
       {/* Main Content Area */}
