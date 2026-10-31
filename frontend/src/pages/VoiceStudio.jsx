@@ -15,22 +15,24 @@ import {
   Send,
   Layers,
   Activity,
+  ChevronRight,
+  ShieldCheck,
 } from 'lucide-react';
 import { api } from '../services/api';
 import { WaveformVisualizer } from '../components/WaveformVisualizer';
 import { EvidenceDrawer } from '../components/EvidenceDrawer';
 
 export const SUPPORTED_LANGUAGES = [
-  { code: 'hi', name: 'Hindi', native: 'हिन्दी', flag: 'IN' },
-  { code: 'en', name: 'English', native: 'English', flag: 'IN' },
-  { code: 'bn', name: 'Bengali', native: 'বাংলা', flag: 'IN' },
-  { code: 'gu', name: 'Gujarati', native: 'ગુજરાતી', flag: 'IN' },
-  { code: 'kn', name: 'Kannada', native: 'ಕನ್ನಡ', flag: 'IN' },
-  { code: 'ml', name: 'Malayalam', native: 'മലയാളം', flag: 'IN' },
-  { code: 'mr', name: 'Marathi', native: 'मराठी', flag: 'IN' },
-  { code: 'pa', name: 'Punjabi', native: 'ਪੰਜਾਬੀ', flag: 'IN' },
-  { code: 'ta', name: 'Tamil', native: 'தமிழ்', flag: 'IN' },
-  { code: 'te', name: 'Telugu', native: 'తెలుగు', flag: 'IN' },
+  { code: 'hi', name: 'Hindi', native: 'हिन्दी' },
+  { code: 'en', name: 'English', native: 'English' },
+  { code: 'bn', name: 'Bengali', native: 'বাংলা' },
+  { code: 'gu', name: 'Gujarati', native: 'ગુજરાતી' },
+  { code: 'kn', name: 'Kannada', native: 'ಕನ್ನಡ' },
+  { code: 'ml', name: 'Malayalam', native: 'മലയാളം' },
+  { code: 'mr', name: 'Marathi', native: 'मराठी' },
+  { code: 'pa', name: 'Punjabi', native: 'ਪੰਜਾਬੀ' },
+  { code: 'ta', name: 'Tamil', native: 'தமிழ்' },
+  { code: 'te', name: 'Telugu', native: 'తెలుగు' },
 ];
 
 export function VoiceStudio() {
@@ -160,7 +162,7 @@ export function VoiceStudio() {
   const isGnaniConfigured = healthStatus?.gnani_configured;
 
   return (
-    <div className="page-body">
+    <div className="page-body animate-fade-in">
       {/* Studio Header */}
       <div
         style={{
@@ -169,15 +171,15 @@ export function VoiceStudio() {
           alignItems: 'flex-start',
           marginBottom: '2rem',
           flexWrap: 'wrap',
-          gap: '1rem',
+          gap: '1.25rem',
         }}
       >
         <div>
-          <div className="eyebrow" style={{ marginBottom: '0.45rem' }}>
-            <Radio size={13} />
-            <span>Multilingual Voice Operations • Official Gnani.ai SDK</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.45rem' }}>
+            <span className="badge badge-violet">Multilingual Voice Operations</span>
+            <span className="badge badge-muted">Official Gnani.ai SDK</span>
           </div>
-          <h1 style={{ fontSize: '2.15rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+          <h1 style={{ fontSize: '2.15rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
             Voice Studio
           </h1>
           <p style={{ color: 'var(--muted-text)', fontSize: '0.96rem', maxWidth: '700px' }}>
@@ -187,23 +189,24 @@ export function VoiceStudio() {
 
         {/* 10 Indian Languages Selector */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--corp-navy)', fontSize: '0.84rem', fontWeight: 700 }}>
-            <Globe size={18} color="#0066FF" />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--primary-indigo)', fontSize: '0.84rem', fontWeight: 700 }}>
+            <Globe size={18} color="#723ECF" />
             <span>Acoustic Language:</span>
           </div>
           <select
             value={selectedLang}
             onChange={(e) => setSelectedLang(e.target.value)}
             style={{
-              padding: '0.6rem 1rem',
+              padding: '0.62rem 1.15rem',
               borderRadius: 'var(--radius-sm)',
               border: '1px solid var(--border-medium)',
               backgroundColor: '#FFFFFF',
               fontWeight: 700,
               fontSize: '0.88rem',
-              color: 'var(--corp-navy)',
+              color: 'var(--primary-indigo)',
               cursor: 'pointer',
               boxShadow: 'var(--shadow-xs)',
+              fontFamily: selectedLang === 'hi' ? 'var(--font-indic)' : 'var(--font-body)',
             }}
           >
             {SUPPORTED_LANGUAGES.map((l) => (
@@ -215,14 +218,14 @@ export function VoiceStudio() {
         </div>
       </div>
 
-      {/* API Key Missing State */}
+      {/* API Key Missing Notice */}
       {!isGnaniConfigured && (
         <div
           className="zm-card"
           style={{
             padding: '1.5rem',
-            backgroundColor: '#FEF3D6',
-            border: '1px solid rgba(180, 83, 9, 0.3)',
+            backgroundColor: 'var(--warning-subtle)',
+            border: '1px solid var(--warning-border)',
             marginBottom: '2rem',
             display: 'flex',
             alignItems: 'flex-start',
@@ -233,37 +236,37 @@ export function VoiceStudio() {
             style={{
               width: '40px',
               height: '40px',
-              borderRadius: '6px',
+              borderRadius: 'var(--radius-sm)',
               backgroundColor: '#FFFFFF',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#B45309',
+              color: 'var(--warning)',
               flexShrink: 0,
-              border: '1px solid rgba(180, 83, 9, 0.25)',
+              border: '1px solid var(--warning-border)',
             }}
           >
             <Key size={20} />
           </div>
           <div style={{ flex: 1 }}>
-            <h3 style={{ fontSize: '1.02rem', fontWeight: 800, color: '#78350F', marginBottom: '0.25rem' }}>
+            <h3 style={{ fontSize: '1.02rem', fontWeight: 800, color: 'var(--warning)', marginBottom: '0.25rem' }}>
               Gnani.ai Official SDK Integration Ready
             </h3>
-            <p style={{ fontSize: '0.84rem', color: '#92400E', lineHeight: 1.55 }}>
-              The official <code>gnani-vachana</code> Python client is installed with STT (<code>GnaniSTTClient</code>) and TTS (<code>GnaniTTSClient</code>, <code>timbre-v2.5</code>). Configure your <code>GNANI_API_KEY</code> in <strong>Settings</strong> or <code>.env</code> to stream speech audio. In accordance with platform guidelines, simulated voice responses are prohibited.
+            <p style={{ fontSize: '0.84rem', color: 'var(--body-text)', lineHeight: 1.55 }}>
+              The official <code>gnani-vachana</code> Python client is configured with STT (<code>GnaniSTTClient</code>) and TTS (<code>GnaniTTSClient</code>, <code>timbre-v2.5</code>). Configure your <code>GNANI_API_KEY</code> in <strong>Settings</strong> or <code>.env</code> to stream speech audio. In accordance with Capstone guidelines, simulated voice responses are prohibited.
             </p>
           </div>
         </div>
       )}
 
-      {/* Error state */}
+      {/* Error State Banner */}
       {voiceError && (
         <div
           style={{
             padding: '0.85rem 1.25rem',
             backgroundColor: 'var(--error-subtle)',
             borderRadius: 'var(--radius-sm)',
-            border: '1px solid rgba(209, 52, 56, 0.25)',
+            border: '1px solid var(--error-border)',
             color: 'var(--error)',
             fontSize: '0.86rem',
             display: 'flex',
@@ -277,25 +280,29 @@ export function VoiceStudio() {
         </div>
       )}
 
-      {/* Main Voice Console */}
+      {/* Main Voice Studio Console Grid */}
       <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '2rem', marginBottom: '2.25rem' }}>
-        {/* Left: Deep Navy Acoustic Control Chamber */}
+        {/* Left: Deep Indigo Acoustic Control Chamber */}
         <div
-          className="zm-card-navy"
+          className="zm-card-dark"
           style={{
             padding: '2.5rem 2rem',
+            borderRadius: 'var(--radius-lg)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            minHeight: '420px',
+            minHeight: '430px',
             position: 'relative',
+            background: 'linear-gradient(135deg, #17143F 0%, #100E2D 100%)',
+            border: '1px solid rgba(114, 62, 207, 0.28)',
+            boxShadow: 'var(--shadow-xl)',
           }}
         >
           <div
             style={{
               fontSize: '0.74rem',
-              color: 'rgba(255, 255, 255, 0.65)',
+              color: 'rgba(255, 255, 255, 0.7)',
               textTransform: 'uppercase',
               letterSpacing: '0.1em',
               marginBottom: '1.25rem',
@@ -311,7 +318,7 @@ export function VoiceStudio() {
               fontSize: '2.8rem',
               fontWeight: 800,
               fontFamily: 'var(--font-mono)',
-              color: isRecording ? '#FF6B74' : '#FFFFFF',
+              color: isRecording ? '#FF5C77' : '#FFFFFF',
               marginBottom: '1.25rem',
               letterSpacing: '-0.02em',
             }}
@@ -331,41 +338,47 @@ export function VoiceStudio() {
                 onClick={startRecording}
                 disabled={isProcessing}
                 style={{
-                  width: '68px',
-                  height: '68px',
+                  width: '70px',
+                  height: '70px',
                   borderRadius: '50%',
-                  backgroundColor: 'var(--accent-blue)',
+                  backgroundColor: 'var(--accent-violet)',
                   color: '#FFFFFF',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  boxShadow: '0 8px 25px rgba(0, 102, 255, 0.45)',
-                  transition: 'transform 0.15s ease',
+                  boxShadow: 'var(--shadow-violet-lg)',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'transform 0.15s ease, background-color var(--transition-fast)',
                 }}
                 title="Start Recording Speech"
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--accent-violet-hover)')}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'var(--accent-violet)')}
                 onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.95)')}
                 onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
               >
-                <Mic size={30} />
+                <Mic size={32} />
               </button>
             ) : (
               <button
                 onClick={stopRecording}
                 style={{
-                  width: '68px',
-                  height: '68px',
+                  width: '70px',
+                  height: '70px',
                   borderRadius: '50%',
                   backgroundColor: 'var(--error)',
                   color: '#FFFFFF',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  boxShadow: '0 8px 25px rgba(209, 52, 56, 0.5)',
-                  animation: 'pulse-recording 1.2s infinite ease-in-out',
+                  boxShadow: '0 8px 25px rgba(201, 76, 89, 0.55)',
+                  border: 'none',
+                  cursor: 'pointer',
+                  animation: 'pulseGlow 1.2s infinite ease-in-out',
                 }}
                 title="Stop Recording"
               >
-                <MicOff size={30} />
+                <MicOff size={32} />
               </button>
             )}
 
@@ -373,19 +386,19 @@ export function VoiceStudio() {
               <button
                 onClick={() => handleProcessVoice()}
                 disabled={isProcessing}
-                className="btn-blue"
-                style={{ padding: '0.65rem 1.35rem' }}
+                className="btn-primary"
+                style={{ padding: '0.68rem 1.4rem' }}
               >
                 {isProcessing ? 'Processing via Gnani...' : 'Run Pipeline'}
               </button>
             )}
           </div>
 
-          {/* Workflow Sequence */}
+          {/* Workflow Sequence Indicator */}
           <div
             style={{
               fontSize: '0.74rem',
-              color: 'rgba(255, 255, 255, 0.7)',
+              color: 'rgba(255, 255, 255, 0.72)',
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
@@ -394,14 +407,14 @@ export function VoiceStudio() {
           >
             <span>Customer Speaks</span>
             <span>→</span>
-            <span style={{ color: '#0066FF' }}>Gnani STT</span>
+            <span style={{ color: '#9D68FF' }}>Gnani STT</span>
             <span>→</span>
             <span>LLM + RAG</span>
             <span>→</span>
-            <span style={{ color: '#0066FF' }}>Gnani TTS</span>
+            <span style={{ color: '#9D68FF' }}>Gnani TTS</span>
           </div>
 
-          {/* Direct Input Field */}
+          {/* Direct Text Input Field */}
           <div
             style={{
               width: '100%',
@@ -422,9 +435,9 @@ export function VoiceStudio() {
                 placeholder="e.g. क्या मैं 10 दिन बाद सामान वापस कर सकता हूँ?"
                 style={{
                   flex: 1,
-                  padding: '0.5rem 0.85rem',
+                  padding: '0.55rem 0.95rem',
                   borderRadius: 'var(--radius-sm)',
-                  border: '1px solid rgba(255, 255, 255, 0.18)',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
                   backgroundColor: 'rgba(255, 255, 255, 0.08)',
                   color: '#FFFFFF',
                   fontSize: '0.86rem',
@@ -436,8 +449,8 @@ export function VoiceStudio() {
               <button
                 onClick={() => handleProcessVoice(null, manualQuery)}
                 disabled={isProcessing || !manualQuery.trim()}
-                className="btn-blue"
-                style={{ padding: '0.5rem 0.95rem', fontSize: '0.82rem' }}
+                className="btn-primary"
+                style={{ padding: '0.5rem 1rem', fontSize: '0.82rem' }}
               >
                 <Send size={14} />
               </button>
@@ -449,8 +462,8 @@ export function VoiceStudio() {
         <div className="zm-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
             <div>
-              <div className="eyebrow" style={{ marginBottom: '0.2rem' }}>Pipeline Telemetry</div>
-              <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+              <span className="badge badge-violet" style={{ marginBottom: '0.2rem' }}>Pipeline Telemetry</span>
+              <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
                 Live Interaction Preview
               </h2>
             </div>
@@ -470,10 +483,10 @@ export function VoiceStudio() {
                   style={{
                     padding: '0.85rem 1.15rem',
                     borderRadius: 'var(--radius-sm)',
-                    backgroundColor: 'var(--bg-slate)',
-                    border: '1px solid var(--border-light)',
+                    backgroundColor: 'var(--light-bg)',
+                    border: '1px solid var(--border-card)',
                     fontSize: '0.92rem',
-                    color: 'var(--corp-navy)',
+                    color: 'var(--primary-indigo)',
                     fontFamily: selectedLang === 'hi' ? 'var(--font-indic)' : 'var(--font-body)',
                     fontWeight: 600,
                   }}
@@ -491,10 +504,10 @@ export function VoiceStudio() {
                   style={{
                     padding: '1rem 1.15rem',
                     borderRadius: 'var(--radius-sm)',
-                    backgroundColor: 'var(--accent-blue-subtle)',
-                    border: '1px solid rgba(0, 102, 255, 0.2)',
+                    backgroundColor: 'var(--soft-violet-subtle)',
+                    border: '1px solid rgba(114, 62, 207, 0.22)',
                     fontSize: '0.92rem',
-                    color: 'var(--corp-navy)',
+                    color: 'var(--primary-indigo)',
                     lineHeight: 1.6,
                     fontFamily: selectedLang === 'hi' ? 'var(--font-indic)' : 'var(--font-body)',
                   }}
@@ -503,7 +516,7 @@ export function VoiceStudio() {
                 </div>
               </div>
 
-              {/* RAG Evidence cited */}
+              {/* RAG Evidence Cited */}
               {currentResult.sources && currentResult.sources.length > 0 && (
                 <EvidenceDrawer sources={currentResult.sources} />
               )}
@@ -515,14 +528,14 @@ export function VoiceStudio() {
                   padding: '1.15rem',
                   borderRadius: 'var(--radius-sm)',
                   backgroundColor: '#FFFFFF',
-                  border: '1px solid var(--border-light)',
+                  border: '1px solid var(--border-card)',
                   boxShadow: 'var(--shadow-xs)',
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.65rem' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <Volume2 size={16} color="#0066FF" />
-                    <span style={{ fontSize: '0.84rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+                    <Volume2 size={16} color="#723ECF" />
+                    <span style={{ fontSize: '0.84rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
                       Gnani TTS Spoken Synthesis
                     </span>
                   </div>
@@ -547,19 +560,19 @@ export function VoiceStudio() {
                 style={{
                   width: '52px',
                   height: '52px',
-                  borderRadius: '8px',
-                  backgroundColor: 'var(--accent-blue-subtle)',
-                  color: 'var(--accent-blue)',
+                  borderRadius: 'var(--radius-md)',
+                  backgroundColor: 'var(--soft-violet)',
+                  color: 'var(--accent-violet)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   marginBottom: '1rem',
-                  border: '1px solid rgba(0, 102, 255, 0.2)',
+                  border: '1px solid rgba(114, 62, 207, 0.2)',
                 }}
               >
                 <Mic size={24} />
               </div>
-              <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--corp-navy)', marginBottom: '0.4rem' }}>
+              <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--primary-indigo)', marginBottom: '0.4rem' }}>
                 Awaiting Acoustic Capture
               </h3>
               <p style={{ fontSize: '0.84rem', color: 'var(--muted-text)', maxWidth: '340px', lineHeight: 1.55 }}>
@@ -570,11 +583,11 @@ export function VoiceStudio() {
         </div>
       </div>
 
-      {/* Turn History */}
+      {/* Turn History Audit Table */}
       {sessionTurns.length > 0 && (
         <div className="zm-card" style={{ padding: '1.75rem' }}>
-          <div className="eyebrow" style={{ marginBottom: '0.25rem' }}>Session Audit</div>
-          <h2 style={{ fontSize: '1.18rem', fontWeight: 800, color: 'var(--corp-navy)', marginBottom: '1.25rem' }}>
+          <span className="badge badge-violet" style={{ marginBottom: '0.35rem' }}>Session Audit</span>
+          <h2 style={{ fontSize: '1.18rem', fontWeight: 800, color: 'var(--primary-indigo)', marginBottom: '1.25rem' }}>
             Voice Studio Turn History
           </h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
@@ -584,7 +597,7 @@ export function VoiceStudio() {
                 style={{
                   padding: '1rem 1.15rem',
                   borderRadius: 'var(--radius-sm)',
-                  backgroundColor: 'var(--bg-neutral)',
+                  backgroundColor: 'var(--light-bg)',
                   border: '1px solid var(--border-light)',
                   display: 'flex',
                   justifyContent: 'space-between',
@@ -593,8 +606,8 @@ export function VoiceStudio() {
               >
                 <div style={{ flex: 1 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
-                    <span className="badge badge-blue">{turn.language?.toUpperCase() || 'HI'}</span>
-                    <span style={{ fontSize: '0.86rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
+                    <span className="badge badge-violet">{turn.language?.toUpperCase() || 'HI'}</span>
+                    <span style={{ fontSize: '0.86rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
                       "{turn.transcript || 'Speech input'}"
                     </span>
                   </div>
