@@ -5,13 +5,11 @@ import {
   RefreshCw,
   FileText,
   Clock,
-  Layers,
   ShieldCheck,
   AlertTriangle,
-  ChevronRight,
-  Filter,
-  CheckCircle2,
   Calendar,
+  Layers,
+  Sparkles,
 } from 'lucide-react';
 import { api } from '../services/api';
 import { EmptyState } from '../components/EmptyState';
@@ -75,23 +73,21 @@ export function KnowledgeBase() {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'flex-start',
-          marginBottom: '1.75rem',
+          marginBottom: '2rem',
           flexWrap: 'wrap',
           gap: '1rem',
         }}
       >
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
-            <span className="badge badge-violet">Policy Grounding Core</span>
-            <span className="badge badge-success">
-              {kbData?.total_chunks ? `${kbData.total_chunks} Chunks Indexed` : 'Vector Indexed'}
-            </span>
+          <div className="eyebrow" style={{ marginBottom: '0.45rem' }}>
+            <Layers size={13} />
+            <span>Authoritative Policy Store • Multi-Turn Vector RAG</span>
           </div>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
+          <h1 style={{ fontSize: '2.15rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
             Knowledge Base
           </h1>
-          <p style={{ color: 'var(--muted-text)', fontSize: '0.94rem' }}>
-            Authoritative documents, section IDs, chunk indices, and policy precedence rules.
+          <p style={{ color: 'var(--muted-text)', fontSize: '0.96rem' }}>
+            Document directory, section chunk indices, and authoritative policy precedence hierarchy.
           </p>
         </div>
 
@@ -99,40 +95,40 @@ export function KnowledgeBase() {
           onClick={handleReindex}
           disabled={reindexing}
           className="btn-secondary"
-          title="Re-chunk and re-index all Markdown policies into the vector store"
+          title="Re-chunk and re-index Markdown policies into the vector store"
         >
           <RefreshCw size={15} className={reindexing ? 'animate-spin' : ''} />
           <span>{reindexing ? 'Re-indexing Knowledge...' : 'Refresh Knowledge Index'}</span>
         </button>
       </div>
 
-      {/* Policy Precedence Architecture Notice */}
+      {/* Enterprise Policy Precedence Banner */}
       <div
         className="zm-card"
         style={{
-          padding: '1rem 1.25rem',
+          padding: '1.25rem 1.75rem',
           backgroundColor: '#FFFFFF',
-          borderLeft: '4px solid #723ECF',
-          marginBottom: '1.5rem',
+          borderLeft: '4px solid var(--accent-blue)',
+          marginBottom: '1.75rem',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           flexWrap: 'wrap',
-          gap: '0.75rem',
+          gap: '1rem',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <ShieldCheck size={20} color="#723ECF" />
-          <div style={{ fontSize: '0.82rem', color: 'var(--body-text)' }}>
-            <strong>Precedence Chain:</strong>{' '}
-            <span style={{ color: 'var(--primary-indigo)', fontWeight: 600 }}>Current Policies</span> →{' '}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+          <ShieldCheck size={22} color="#0066FF" />
+          <div style={{ fontSize: '0.86rem', color: 'var(--body-text)' }}>
+            <strong style={{ color: 'var(--corp-navy)' }}>Precedence Chain:</strong>{' '}
+            <span style={{ color: 'var(--accent-blue)', fontWeight: 700 }}>Current Policies (v4)</span> →{' '}
             <span>Agent Guides</span> → <span>Help Documents</span> → <span>FAQs</span> →{' '}
             <span style={{ color: 'var(--muted-text)' }}>Marketing Documents</span>.
           </div>
         </div>
 
-        <div style={{ fontSize: '0.74rem', color: '#C94C59', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
-          <AlertTriangle size={14} />
+        <div style={{ fontSize: '0.78rem', color: 'var(--error)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '5px' }}>
+          <AlertTriangle size={15} />
           <span>pol_returns_v4.md overrides superseded v3</span>
         </div>
       </div>
@@ -142,7 +138,7 @@ export function KnowledgeBase() {
         style={{
           display: 'flex',
           gap: '1rem',
-          marginBottom: '1.5rem',
+          marginBottom: '1.75rem',
           alignItems: 'center',
           flexWrap: 'wrap',
         }}
@@ -150,7 +146,7 @@ export function KnowledgeBase() {
         <div
           style={{
             flex: 1,
-            minWidth: '260px',
+            minWidth: '280px',
             position: 'relative',
             display: 'flex',
             alignItems: 'center',
@@ -158,7 +154,7 @@ export function KnowledgeBase() {
         >
           <Search
             size={16}
-            color="#77758A"
+            color="#64748B"
             style={{ position: 'absolute', left: '12px', pointerEvents: 'none' }}
           />
           <input
@@ -168,7 +164,7 @@ export function KnowledgeBase() {
             placeholder="Search documents by ID, policy section, or keywords..."
             style={{
               width: '100%',
-              padding: '0.55rem 0.75rem 0.55rem 2.25rem',
+              padding: '0.6rem 0.85rem 0.6rem 2.35rem',
               borderRadius: 'var(--radius-sm)',
               border: '1px solid var(--border-medium)',
               backgroundColor: '#FFFFFF',
@@ -178,20 +174,20 @@ export function KnowledgeBase() {
         </div>
 
         {/* Category Filter Pills */}
-        <div style={{ display: 'flex', gap: '0.45rem', overflowX: 'auto' }}>
+        <div style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto' }}>
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
               style={{
-                padding: '0.45rem 0.85rem',
-                borderRadius: 'var(--radius-full)',
+                padding: '0.5rem 0.95rem',
+                borderRadius: 'var(--radius-sm)',
                 fontSize: '0.78rem',
-                fontWeight: 600,
+                fontWeight: 700,
                 textTransform: 'capitalize',
-                backgroundColor: selectedCategory === cat ? 'var(--primary-indigo)' : '#FFFFFF',
-                color: selectedCategory === cat ? '#FFFFFF' : 'var(--body-text)',
-                border: selectedCategory === cat ? '1px solid var(--primary-indigo)' : '1px solid var(--border-light)',
+                backgroundColor: selectedCategory === cat ? 'var(--corp-navy)' : '#FFFFFF',
+                color: selectedCategory === cat ? '#FFFFFF' : 'var(--corp-navy)',
+                border: selectedCategory === cat ? '1px solid var(--corp-navy)' : '1px solid var(--border-light)',
               }}
             >
               {cat === 'all' ? 'All Policies' : cat}
@@ -201,9 +197,9 @@ export function KnowledgeBase() {
       </div>
 
       {/* Split View: Document Directory on Left, Detailed Content Preview on Right */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1.3fr', gap: '1.5rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1.3fr', gap: '1.75rem' }}>
         {/* Document List */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
           {filteredDocs.length > 0 ? (
             filteredDocs.map((doc) => {
               const isSelected = activeDoc?.id === doc.id;
@@ -215,41 +211,39 @@ export function KnowledgeBase() {
                   onClick={() => setActiveDoc(doc)}
                   className="zm-card"
                   style={{
-                    padding: '1rem 1.15rem',
+                    padding: '1.15rem 1.35rem',
                     cursor: 'pointer',
-                    borderColor: isSelected ? '#723ECF' : 'var(--border-light)',
-                    backgroundColor: isSelected ? 'var(--soft-violet-subtle)' : '#FFFFFF',
-                    boxShadow: isSelected ? '0 0 0 1px #723ECF' : 'var(--shadow-xs)',
+                    borderColor: isSelected ? 'var(--accent-blue)' : 'var(--border-light)',
+                    backgroundColor: isSelected ? 'var(--accent-blue-subtle)' : '#FFFFFF',
+                    boxShadow: isSelected ? '0 0 0 1px var(--accent-blue)' : 'var(--shadow-xs)',
                   }}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.35rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <FileText size={16} color={isSuperseded ? '#C94C59' : '#723ECF'} />
-                      <span style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--primary-indigo)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.45rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                      <FileText size={17} color={isSuperseded ? '#D13438' : '#0066FF'} />
+                      <span style={{ fontSize: '0.94rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
                         {doc.title || doc.id}
                       </span>
                     </div>
 
-                    <div style={{ display: 'flex', gap: '0.35rem' }}>
-                      <span className={`badge ${isSuperseded ? 'badge-error' : 'badge-success'}`}>
-                        {doc.status || 'Active'}
-                      </span>
-                    </div>
+                    <span className={`badge ${isSuperseded ? 'badge-error' : 'badge-success'}`}>
+                      {doc.status || 'Active'}
+                    </span>
                   </div>
 
-                  <p style={{ fontSize: '0.78rem', color: 'var(--muted-text)', lineHeight: 1.45, marginBottom: '0.65rem' }}>
-                    {doc.summary || 'Policy guide and operational guidelines.'}
+                  <p style={{ fontSize: '0.82rem', color: 'var(--muted-text)', lineHeight: 1.5, marginBottom: '0.75rem' }}>
+                    {doc.summary || 'Authoritative policy guide and operational customer standards.'}
                   </p>
 
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--muted-text)' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.74rem', color: 'var(--muted-text)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
                       <span style={{ fontFamily: 'var(--font-mono)' }}>ID: {doc.id}</span>
                       <span>•</span>
                       <span>{doc.chunks_count || 1} chunks</span>
                     </div>
                     {doc.effective_date && (
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
-                        <Calendar size={11} /> {doc.effective_date}
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <Calendar size={12} /> {doc.effective_date}
                       </span>
                     )}
                   </div>
@@ -260,7 +254,7 @@ export function KnowledgeBase() {
             <EmptyState
               icon={BookOpen}
               title="No documents matching query"
-              description="Ensure the dataset documents are placed in the dataset folder and refresh."
+              description="Ensure policies are indexed in the dataset directory and refresh."
               actionLabel="Refresh Documents"
               onAction={fetchKnowledgeBase}
             />
@@ -268,23 +262,23 @@ export function KnowledgeBase() {
         </div>
 
         {/* Selected Document Detail View */}
-        <div className="zm-card" style={{ padding: '1.75rem', display: 'flex', flexDirection: 'column' }}>
+        <div className="zm-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
           {activeDoc ? (
             <div>
               {/* Document Header */}
-              <div style={{ borderBottom: '1px solid var(--border-light)', paddingBottom: '1rem', marginBottom: '1.25rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.45rem' }}>
-                  <span className="badge badge-violet">{activeDoc.category || 'Policy'}</span>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.74rem', color: 'var(--muted-text)' }}>
+              <div style={{ borderBottom: '1px solid var(--border-light)', paddingBottom: '1.25rem', marginBottom: '1.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                  <span className="badge badge-blue">{activeDoc.category || 'Policy'}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.76rem', color: 'var(--muted-text)' }}>
                     <Clock size={13} />
                     <span>Effective: {activeDoc.effective_date || 'Current'}</span>
                   </div>
                 </div>
 
-                <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--primary-indigo)' }}>
+                <h2 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
                   {activeDoc.title || activeDoc.id}
                 </h2>
-                <div style={{ fontSize: '0.76rem', fontFamily: 'var(--font-mono)', color: 'var(--muted-text)', marginTop: '0.25rem' }}>
+                <div style={{ fontSize: '0.78rem', fontFamily: 'var(--font-mono)', color: 'var(--muted-text)', marginTop: '0.35rem' }}>
                   File: {activeDoc.filename || activeDoc.id}
                 </div>
               </div>
@@ -293,19 +287,19 @@ export function KnowledgeBase() {
               {(activeDoc.status === 'superseded' || activeDoc.id.includes('superseded')) && (
                 <div
                   style={{
-                    padding: '0.75rem',
+                    padding: '0.85rem 1rem',
                     borderRadius: 'var(--radius-sm)',
                     backgroundColor: 'var(--error-subtle)',
-                    border: '1px solid rgba(201, 76, 89, 0.2)',
+                    border: '1px solid rgba(209, 52, 56, 0.25)',
                     color: 'var(--error)',
-                    fontSize: '0.78rem',
-                    marginBottom: '1rem',
+                    fontSize: '0.82rem',
+                    marginBottom: '1.25rem',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.5rem',
                   }}
                 >
-                  <AlertTriangle size={15} />
+                  <AlertTriangle size={16} />
                   <span>
                     <strong>Warning:</strong> This policy has been superseded by v4 and is not used for customer decisions.
                   </span>
@@ -313,32 +307,32 @@ export function KnowledgeBase() {
               )}
 
               {/* Sections & Chunks View */}
-              <div style={{ marginBottom: '1.25rem' }}>
-                <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--primary-indigo)', marginBottom: '0.5rem' }}>
+              <div style={{ marginBottom: '1.5rem' }}>
+                <h3 style={{ fontSize: '0.96rem', fontWeight: 800, color: 'var(--corp-navy)', marginBottom: '0.65rem' }}>
                   Indexed Policy Sections
                 </h3>
 
                 {activeDoc.sections && activeDoc.sections.length > 0 ? (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                     {activeDoc.sections.map((sec, idx) => (
                       <div
                         key={idx}
                         style={{
-                          padding: '0.75rem 0.9rem',
+                          padding: '0.85rem 1rem',
                           borderRadius: 'var(--radius-sm)',
-                          backgroundColor: 'var(--light-bg)',
+                          backgroundColor: 'var(--bg-neutral)',
                           border: '1px solid var(--border-light)',
                         }}
                       >
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
-                          <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--primary-indigo)' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+                          <span style={{ fontSize: '0.84rem', fontWeight: 800, color: 'var(--corp-navy)' }}>
                             {sec.title || `Section ${idx + 1}`}
                           </span>
-                          <span style={{ fontSize: '0.7rem', fontFamily: 'var(--font-mono)', color: '#723ECF' }}>
+                          <span style={{ fontSize: '0.72rem', fontFamily: 'var(--font-mono)', color: 'var(--accent-blue)', fontWeight: 700 }}>
                             {sec.section_id || `SEC-${idx + 1}`}
                           </span>
                         </div>
-                        <p style={{ fontSize: '0.8rem', color: 'var(--body-text)', lineHeight: 1.5 }}>
+                        <p style={{ fontSize: '0.84rem', color: 'var(--body-text)', lineHeight: 1.6 }}>
                           {sec.content || sec.text}
                         </p>
                       </div>
@@ -347,14 +341,14 @@ export function KnowledgeBase() {
                 ) : (
                   <div
                     style={{
-                      padding: '1rem',
-                      backgroundColor: 'var(--light-bg)',
+                      padding: '1.15rem',
+                      backgroundColor: 'var(--bg-neutral)',
                       borderRadius: 'var(--radius-sm)',
-                      fontSize: '0.82rem',
+                      fontSize: '0.84rem',
                       color: 'var(--body-text)',
-                      lineHeight: 1.6,
+                      lineHeight: 1.65,
                       whiteSpace: 'pre-wrap',
-                      maxHeight: '400px',
+                      maxHeight: '420px',
                       overflowY: 'auto',
                     }}
                   >
@@ -364,8 +358,8 @@ export function KnowledgeBase() {
               </div>
             </div>
           ) : (
-            <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--muted-text)', fontSize: '0.88rem' }}>
-              Select a document from the left list to inspect its policy sections and vector chunks.
+            <div style={{ padding: '3.5rem', textAlign: 'center', color: 'var(--muted-text)', fontSize: '0.9rem' }}>
+              Select a policy from the directory to inspect its sections and vector chunks.
             </div>
           )}
         </div>
