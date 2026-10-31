@@ -11,7 +11,7 @@ import {
   ChevronLeft,
   ChevronRight,
   ShieldCheck,
-  Radio,
+  CheckCircle2,
 } from 'lucide-react';
 import { Logo } from './Logo';
 
@@ -30,27 +30,28 @@ export function Sidebar({ currentTab, onSelectTab, collapsed, onToggleCollapse, 
   return (
     <aside
       style={{
-        width: collapsed ? '72px' : '260px',
-        backgroundColor: '#17143F',
-        borderRight: '1px solid rgba(255, 255, 255, 0.08)',
+        width: collapsed ? '72px' : '265px',
+        backgroundColor: '#FFFFFF',
+        borderRight: '1px solid var(--border-light)',
         display: 'flex',
         flexDirection: 'column',
         height: '100vh',
-        transition: 'width 240ms cubic-bezier(0.16, 1, 0.3, 1)',
+        transition: 'width 200ms cubic-bezier(0.16, 1, 0.3, 1)',
         position: 'relative',
         zIndex: 50,
         flexShrink: 0,
+        boxShadow: 'var(--shadow-xs)',
       }}
     >
       {/* Brand Header */}
       <div
         style={{
-          height: '70px',
+          height: '72px',
           padding: collapsed ? '0 16px' : '0 20px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: collapsed ? 'center' : 'space-between',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.07)',
+          borderBottom: '1px solid var(--border-light)',
         }}
       >
         <Logo collapsed={collapsed} />
@@ -59,36 +60,33 @@ export function Sidebar({ currentTab, onSelectTab, collapsed, onToggleCollapse, 
             onClick={onToggleCollapse}
             aria-label="Collapse sidebar"
             style={{
-              color: 'rgba(237, 231, 250, 0.55)',
+              color: 'var(--muted-text)',
               padding: '6px',
-              borderRadius: '6px',
+              borderRadius: '4px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              backgroundColor: 'rgba(255, 255, 255, 0.04)',
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(237, 231, 250, 0.55)')}
+            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--corp-navy)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--muted-text)')}
           >
             <ChevronLeft size={16} />
           </button>
         )}
       </div>
 
-      {/* Collapse button when already collapsed */}
       {collapsed && (
         <div style={{ display: 'flex', justifyContent: 'center', padding: '10px 0' }}>
           <button
             onClick={onToggleCollapse}
             aria-label="Expand sidebar"
             style={{
-              color: 'rgba(237, 231, 250, 0.55)',
+              color: 'var(--muted-text)',
               padding: '6px',
-              borderRadius: '6px',
-              backgroundColor: 'rgba(255, 255, 255, 0.04)',
+              borderRadius: '4px',
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(237, 231, 250, 0.55)')}
+            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--corp-navy)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--muted-text)')}
           >
             <ChevronRight size={16} />
           </button>
@@ -99,7 +97,7 @@ export function Sidebar({ currentTab, onSelectTab, collapsed, onToggleCollapse, 
       <nav
         style={{
           flex: 1,
-          padding: collapsed ? '12px 8px' : '16px 12px',
+          padding: collapsed ? '14px 8px' : '16px 12px',
           display: 'flex',
           flexDirection: 'column',
           gap: '4px',
@@ -122,40 +120,40 @@ export function Sidebar({ currentTab, onSelectTab, collapsed, onToggleCollapse, 
                 width: '100%',
                 padding: collapsed ? '10px 0' : '9px 12px',
                 justifyContent: collapsed ? 'center' : 'flex-start',
-                borderRadius: '8px',
-                backgroundColor: isActive ? 'rgba(114, 62, 207, 0.22)' : 'transparent',
-                color: isActive ? '#FFFFFF' : 'rgba(237, 231, 250, 0.72)',
+                borderRadius: '6px',
+                backgroundColor: isActive ? 'var(--accent-blue-subtle)' : 'transparent',
+                color: isActive ? 'var(--accent-blue)' : 'var(--corp-navy)',
                 border: isActive
-                  ? '1px solid rgba(157, 104, 255, 0.4)'
+                  ? '1px solid rgba(0, 102, 255, 0.25)'
                   : '1px solid transparent',
-                fontWeight: isActive ? 600 : 500,
-                fontSize: '0.9rem',
+                fontWeight: isActive ? 700 : 500,
+                fontSize: '0.88rem',
                 position: 'relative',
-                transition: 'all 160ms ease',
+                transition: 'all 140ms ease',
               }}
               onMouseEnter={(e) => {
                 if (!isActive) {
-                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
-                  e.currentTarget.style.color = '#FFFFFF';
+                  e.currentTarget.style.backgroundColor = 'var(--bg-slate)';
+                  e.currentTarget.style.color = 'var(--corp-navy)';
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isActive) {
                   e.currentTarget.style.backgroundColor = 'transparent';
-                  e.currentTarget.style.color = 'rgba(237, 231, 250, 0.72)';
+                  e.currentTarget.style.color = 'var(--corp-navy)';
                 }
               }}
             >
-              {/* Active left indicator pill */}
+              {/* Active blue indicator pill */}
               {isActive && (
                 <div
                   style={{
                     position: 'absolute',
                     left: '0px',
                     width: '3.5px',
-                    height: '18px',
-                    borderRadius: '0 4px 4px 0',
-                    backgroundColor: '#9D68FF',
+                    height: '20px',
+                    borderRadius: '0 3px 3px 0',
+                    backgroundColor: 'var(--accent-blue)',
                   }}
                 />
               )}
@@ -163,13 +161,21 @@ export function Sidebar({ currentTab, onSelectTab, collapsed, onToggleCollapse, 
               <Icon
                 size={18}
                 style={{
-                  color: isActive ? '#9D68FF' : 'rgba(237, 231, 250, 0.65)',
+                  color: isActive ? 'var(--accent-blue)' : 'var(--muted-text)',
                   flexShrink: 0,
                 }}
               />
 
               {!collapsed && (
-                <span style={{ flex: 1, textAlign: 'left', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <span
+                  style={{
+                    flex: 1,
+                    textAlign: 'left',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
                   {item.label}
                 </span>
               )}
@@ -180,10 +186,10 @@ export function Sidebar({ currentTab, onSelectTab, collapsed, onToggleCollapse, 
                     fontSize: '0.66rem',
                     fontWeight: 700,
                     padding: '2px 6px',
-                    borderRadius: '4px',
-                    backgroundColor: 'rgba(114, 62, 207, 0.35)',
-                    color: '#EDE7FA',
-                    border: '1px solid rgba(157, 104, 255, 0.35)',
+                    borderRadius: '3px',
+                    backgroundColor: '#FFFFFF',
+                    color: 'var(--accent-blue)',
+                    border: '1px solid rgba(0, 102, 255, 0.3)',
                     letterSpacing: '0.02em',
                   }}
                 >
@@ -199,8 +205,8 @@ export function Sidebar({ currentTab, onSelectTab, collapsed, onToggleCollapse, 
       <div
         style={{
           padding: collapsed ? '12px 8px' : '14px 16px',
-          borderTop: '1px solid rgba(255, 255, 255, 0.07)',
-          backgroundColor: '#100E2D',
+          borderTop: '1px solid var(--border-light)',
+          backgroundColor: 'var(--bg-neutral)',
         }}
       >
         {!collapsed ? (
@@ -212,19 +218,19 @@ export function Sidebar({ currentTab, onSelectTab, collapsed, onToggleCollapse, 
                     width: '7px',
                     height: '7px',
                     borderRadius: '50%',
-                    backgroundColor: systemStatus?.all_healthy ? '#21865B' : '#D69A35',
-                    boxShadow: systemStatus?.all_healthy ? '0 0 8px #21865B' : 'none',
+                    backgroundColor: systemStatus?.all_healthy ? '#0E703C' : '#C28B00',
                   }}
                 />
-                <span style={{ fontSize: '0.74rem', color: 'rgba(237, 231, 250, 0.85)', fontWeight: 600 }}>
-                  {systemStatus?.all_healthy ? 'Engine Online' : 'Operational Status'}
+                <span style={{ fontSize: '0.76rem', color: 'var(--corp-navy)', fontWeight: 700 }}>
+                  {systemStatus?.all_healthy ? 'Engine Operational' : 'Telemetry Active'}
                 </span>
               </div>
               <span
                 style={{
-                  fontSize: '0.68rem',
-                  color: 'rgba(237, 231, 250, 0.45)',
+                  fontSize: '0.7rem',
+                  color: 'var(--muted-text)',
                   fontFamily: 'var(--font-mono)',
+                  fontWeight: 600,
                 }}
               >
                 v2026.1
@@ -233,26 +239,26 @@ export function Sidebar({ currentTab, onSelectTab, collapsed, onToggleCollapse, 
 
             <div
               style={{
-                fontSize: '0.7rem',
-                color: 'rgba(237, 231, 250, 0.55)',
+                fontSize: '0.72rem',
+                color: 'var(--muted-text)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '4px',
               }}
             >
-              <ShieldCheck size={12} color="#9D68FF" />
+              <ShieldCheck size={13} color="#0066FF" />
               <span>VoiceOps FTTT Certified</span>
             </div>
           </div>
         ) : (
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <span
-              title="System Online"
+              title="Operational Status"
               style={{
                 width: '8px',
                 height: '8px',
                 borderRadius: '50%',
-                backgroundColor: systemStatus?.all_healthy ? '#21865B' : '#D69A35',
+                backgroundColor: systemStatus?.all_healthy ? '#0E703C' : '#C28B00',
                 display: 'inline-block',
               }}
             />
